@@ -43,27 +43,27 @@
     z-index: 0;
   }
 
-.tv-container {
+  .tv-container {
     position: relative;
     z-index: 1;
     max-width: 1920px;
     margin: 0 auto;
   }
 
-.header {
+  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
   }
 
-.header-left {
+  .header-left {
     display: flex;
     align-items: center;
     gap: 20px;
   }
 
-.menu-toggle {
+  .menu-toggle {
     width: 32px;
     height: 32px;
     background: rgba(255,255,255,0.1);
@@ -78,19 +78,19 @@
     transition: 0.2s;
   }
 
-.menu-toggle:hover {
+  .menu-toggle:hover {
     background: rgba(255,255,255,0.15);
     transform: scale(1.05);
   }
 
-.menu-toggle span {
+  .menu-toggle span {
     width: 18px;
     height: 2px;
     background: #fff;
     border-radius: 2px;
   }
 
-.logo {
+  .logo {
     font-size: 32px;
     font-weight: 700;
     letter-spacing: -1px;
@@ -101,19 +101,19 @@
     filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.3));
   }
 
-.header-info {
+  .header-info {
     display: flex;
     gap: 20px;
     align-items: center;
   }
 
-.time {
+  .time {
     font-size: 24px;
     font-weight: 300;
     letter-spacing: 1px;
   }
 
-.weather {
+  .weather {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -121,21 +121,21 @@
     opacity: 0.9;
   }
 
-.section-title {
+  .section-title {
     font-size: 24px;
     font-weight: 500;
     margin-bottom: 16px;
     letter-spacing: -0.5px;
   }
 
-.apps-grid {
+  .apps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
     margin-bottom: 40px;
   }
 
-.app-card {
+  .app-card {
     aspect-ratio: 16/9;
     border-radius: 12px;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -151,37 +151,54 @@
     backdrop-filter: blur(40px) saturate(180%);
   }
 
-.app-card:hover {
+  .app-card[data-img]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--card-img);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: 0;
+  }
+
+  .app-card[data-img] .app-icon,
+  .app-card[data-img] .app-name {
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-card:hover {
     transform: scale(1.02);
     border-color: rgba(255, 255, 255, 0.3);
   }
 
-.app-card:focus-visible {
+  .app-card:focus-visible {
     transform: scale(1.02);
     border-color: rgba(255, 255, 255, 0.4);
   }
 
-.app-icon {
+  .app-icon {
     font-size: 48px;
     margin-bottom: 8px;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
   }
 
-.app-name {
+  .app-name {
     font-size: 14px;
     font-weight: 500;
     text-align: center;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   }
 
-.netflix { background: linear-gradient(135deg, #ff416c, #ff4b2b)!important; }
-.youtube { background: linear-gradient(135deg, #f7971e, #ffd200)!important; }
-.prime { background: linear-gradient(135deg, #00c6ff, #0072ff)!important; }
-.globoplay { background: linear-gradient(135deg, #8e2de2, #4a00e0)!important; }
-.disney { background: linear-gradient(135deg, #0575e6, #021b79)!important; }
-.spotify { background: linear-gradient(135deg, #00b09b, #96c93d)!important; }
+  .netflix { background: linear-gradient(135deg, #ff416c, #ff4b2b)!important; }
+  .youtube { background: linear-gradient(135deg, #f7971e, #ffd200)!important; }
+  .prime { background: linear-gradient(135deg, #00c6ff, #0072ff)!important; }
+  .globoplay { background: linear-gradient(135deg, #8e2de2, #4a00e0)!important; }
+  .disney { background: linear-gradient(135deg, #0575e6, #021b79)!important; }
+  .spotify { background: linear-gradient(135deg, #00b09b, #96c93d)!important; }
 
-.banner {
+  .banner {
     width: 100%;
     height: 28vh;
     max-height: 260px;
@@ -199,26 +216,43 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 
-.banner-content {
-    max-width: 600px;
-    z-index: 1;
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--banner-img);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    z-index: 0;
+    border-radius: 16px;
   }
 
-.banner-title {
+  .banner[data-bg] {
+    background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+  }
+
+  .banner-content {
+    max-width: 600px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .banner-title {
     font-size: clamp(22px, 3vw, 36px);
     font-weight: 700;
     margin-bottom: 8px;
     letter-spacing: -1px;
   }
 
-.banner-desc {
+  .banner-desc {
     font-size: 16px;
     opacity: 0.9;
     margin-bottom: 16px;
     line-height: 1.4;
   }
 
-.banner-btn {
+  .banner-btn {
     padding: 10px 24px;
     background: linear-gradient(135deg, #00d4ff, #0099ff);
     color: #fff;
@@ -230,15 +264,15 @@
     transition: 0.2s ease;
   }
 
-.banner-btn:hover {
+  .banner-btn:hover {
     transform: scale(1.02);
   }
 
-.banner-btn:active {
+  .banner-btn:active {
     transform: scale(0.98);
   }
 
-.player-overlay {
+  .player-overlay {
     position: fixed;
     inset: 0;
     background: #000;
@@ -249,11 +283,11 @@
     flex-direction: column;
   }
 
-.player-overlay.active {
+  .player-overlay.active {
     display: flex;
   }
 
-.player-wrapper {
+  .player-wrapper {
     width: 100vw;
     height: 100vh;
     position: relative;
@@ -274,7 +308,7 @@
     display: none!important;
   }
 
-.player-menu {
+  .player-menu {
     position: absolute;
     top: 12px;
     left: 12px;
@@ -284,12 +318,12 @@
     z-index: 10001;
   }
 
-.player-menu.active {
+  .player-menu.active {
     opacity: 1;
     pointer-events: all;
   }
 
-.menu-btn {
+  .menu-btn {
     width: 24px;
     height: 24px;
     background: rgba(0, 0, 0, 0.5);
@@ -306,14 +340,14 @@
     padding: 0;
   }
 
-.menu-btn:hover,.menu-btn:focus {
+  .menu-btn:hover,.menu-btn:focus {
     background: rgba(0, 212, 255, 0.4);
     border-color: #00d4ff;
     color: #fff;
     transform: scale(1.1);
   }
 
-.player-info {
+  .player-info {
     position: absolute;
     top: 12px;
     left: 44px;
@@ -327,11 +361,10 @@
     pointer-events: none;
   }
 
-.player-wrapper:hover.player-info {
+  .player-wrapper:hover .player-info {
     opacity: 1;
   }
 
-  /* MENU LATERAL */
   .sidebar {
     position: fixed;
     top: 0;
@@ -444,14 +477,14 @@
 
   @media (max-width: 1280px) {
     body { padding: 16px 24px; }
-.apps-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-.banner { height: 25vh; padding: 20px 24px; }
-.banner-title { font-size: 24px; }
-.banner-desc { font-size: 14px; }
+    .apps-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .banner { height: 25vh; padding: 20px 24px; }
+    .banner-title { font-size: 24px; }
+    .banner-desc { font-size: 14px; }
   }
 
   @media (max-width: 1366px) {
-.app-card,.banner {
+    .app-card,.banner {
       backdrop-filter: none;
     }
   }
@@ -470,7 +503,7 @@
       <span class="sidebar-arrow">▶</span>
     </div>
     <div class="submenu" id="submenu-config">
-      <div class="submenu-item">Pagamento</div>
+      <div class="submenu-item" data-link="https://seu-link-de-pagamento.com">Pagamento</div>
     </div>
   </div>
 
@@ -490,7 +523,7 @@
       </div>
     </div>
 
-    <div class="banner">
+    <div class="banner" data-bg="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200">
       <div class="banner-content">
         <h1 class="banner-title">Destaque da Semana</h1>
         <p class="banner-desc">Assista aos melhores filmes e séries. Novos lançamentos toda semana.</p>
@@ -736,14 +769,28 @@
     });
   });
 
-  // CLIQUE NOS ITENS DO SUBMENU
-  document.querySelectorAll('.submenu-item[data-url]').forEach(item => {
+  // CLIQUE NOS ITENS DO SUBMENU - AGORA ABRE LINK
+  document.querySelectorAll('.submenu-item[data-link]').forEach(item => {
     item.addEventListener('click', () => {
-      const url = item.getAttribute('data-url');
-      const name = item.textContent.trim();
+      const link = item.getAttribute('data-link');
+      if (link) {
+        window.open(link, '_blank');
+      }
       closeSidebar();
-      openPlayer(url, name);
     });
+  });
+
+  // Carrega foto do banner
+  const banner = document.querySelector('.banner[data-bg]');
+  if (banner) {
+    const bgUrl = banner.getAttribute('data-bg');
+    banner.style.setProperty('--banner-img', `url(${bgUrl})`);
+  }
+
+  // Carrega fotos dos cards
+  document.querySelectorAll('.app-card[data-img]').forEach(card => {
+    const imgUrl = card.getAttribute('data-img');
+    card.style.setProperty('--card-img', `url(${imgUrl})`);
   });
 </script>
 </body>
