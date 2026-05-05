@@ -196,11 +196,17 @@
     cursor: pointer;
     transition: 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+    position: relative;
   }
   
 .banner-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 8px 30px rgba(0, 212, 255, 0.4);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.8), 0 8px 30px rgba(0, 212, 255, 0.6);
+  }
+  
+.banner-btn:active {
+    transform: scale(0.98) translateY(1px);
+    box-shadow: 0 0 60px rgba(0, 212, 255, 1), 0 4px 20px rgba(0, 212, 255, 0.8);
   }
   
 .player-overlay {
