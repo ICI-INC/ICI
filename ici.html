@@ -14,6 +14,14 @@
     box-sizing: border-box;
   }
   
+  *:focus,
+  *:focus-visible,
+  *:focus-within {
+    outline: none!important;
+    -webkit-tap-highlight-color: transparent!important;
+    -webkit-focus-ring-color: transparent!important;
+  }
+  
   body {
     font-family: 'Roboto', sans-serif;
     background: radial-gradient(ellipse at top, #1a1d29 0%, #0a0e14 50%, #000000 100%);
@@ -239,9 +247,13 @@
     height: 100%;
     background: #000;
     object-fit: cover;
+    border: 0!important;
   }
   
-  /* SÓ MUDEI AQUI: BOTÃO MENOR */
+  video::-webkit-media-controls {
+    display: none!important;
+  }
+  
 .player-menu {
     position: absolute;
     bottom: 60px;
@@ -259,19 +271,19 @@
   }
   
 .menu-btn {
-    padding: 5px 10px;
+    padding: 4px 8px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
+    border-radius: 4px;
     color: #fff;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 500;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
   
 .menu-btn:hover,.menu-btn:focus {
@@ -282,7 +294,7 @@
   }
   
 .menu-btn-icon {
-    font-size: 14px;
+    font-size: 12px;
   }
   
 .player-info {
