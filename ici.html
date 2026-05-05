@@ -256,63 +256,45 @@
   
 .player-menu {
     position: absolute;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    top: 20px;
+    left: 20px;
     z-index: 10001;
   }
   
-.player-menu.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-  
 .menu-btn {
-    padding: 4px 8px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 3px solid #00d4ff;
+    border-radius: 8px;
     color: #fff;
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 28px;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
-    gap: 3px;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
   }
   
 .menu-btn:hover,.menu-btn:focus {
-    background: rgba(0, 212, 255, 0.3);
-    border-color: #00d4ff;
-    transform: scale(1.05);
-    outline: none;
-  }
-  
-.menu-btn-icon {
-    font-size: 12px;
+    background: #00d4ff;
+    color: #000;
+    transform: scale(1.1);
   }
   
 .player-info {
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 90px;
     color: #fff;
     font-size: 18px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     padding: 8px 20px;
     border-radius: 8px;
-    opacity: 0;
-    transition: 0.3s;
     pointer-events: none;
-  }
-  
-.player-wrapper:hover.player-info {
-    opacity: 1;
+    border: 1px solid rgba(255,255,255,0.2);
   }
   
   @media (max-width: 1280px) {
@@ -389,8 +371,7 @@
       
       <div class="player-menu" id="playerMenu">
         <button class="menu-btn" id="backHomeBtn" tabindex="0">
-          <span class="menu-btn-icon">🏠</span>
-          Voltar
+          ←
         </button>
       </div>
     </div>
@@ -408,26 +389,14 @@
   
   const playerOverlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('videoPlayer');
-  const playerMenu = document.getElementById('playerMenu');
   const backHomeBtn = document.getElementById('backHomeBtn');
   const playerInfo = document.getElementById('playerInfo');
   let hls = null;
-  let menuTimeout = null;
-
-  function showMenu() {
-    playerMenu.classList.add('active');
-    backHomeBtn.focus();
-    clearTimeout(menuTimeout);
-    menuTimeout = setTimeout(hideMenu, 4000);
-  }
-
-  function hideMenu() {
-    playerMenu.classList.remove('active');
-  }
 
   function openPlayer(url, appName) {
     playerOverlay.classList.add('active');
     playerInfo.textContent = `Carregando: ${appName}`;
+    setTimeout(() => { backHomeBtn.focus(); }, 100);
     
     if (Hls.isSupported()) {
       if (hls) hls.destroy();
@@ -450,13 +419,10 @@
       videoPlayer.play();
       playerInfo.textContent = `Reproduzindo: ${appName}`;
     }
-    
-    setTimeout(showMenu, 500);
   }
 
   function closePlayer() {
     playerOverlay.classList.remove('active');
-    hideMenu();
     videoPlayer.pause();
     videoPlayer.src = '';
     if (hls) {
@@ -467,19 +433,12 @@
   }
 
   backHomeBtn.onclick = closePlayer;
-
-  videoPlayer.addEventListener('click', showMenu);
-
-  let mouseTimeout;
-  playerOverlay.addEventListener('mousemove', () => {
-    showMenu();
-    clearTimeout(mouseTimeout);
-    mouseTimeout = setTimeout(hideMenu, 3000);
-  });
-
-  playerOverlay.addEventListener('click', (e) => {
-    if (e.target === playerOverlay) closePlayer();
-  });
+  backHomeBtn.onkeydown = function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+      e.preventDefault();
+      closePlayer();
+    }
+  };
 
   document.querySelectorAll('.app-card,.banner-btn').forEach(card => {
     card.addEventListener('click', () => {
