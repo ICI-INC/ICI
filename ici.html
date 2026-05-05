@@ -119,15 +119,20 @@
     transition: 0.3s;
   }
   
-.app-card:hover,.app-card:focus {
+.app-card:hover {
     transform: scale(1.05);
     border-color: #00d4ff;
     box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.6);
-    outline: none;
   }
   
-.app-card:hover::before,.app-card:focus::before {
+.app-card:hover::before {
     opacity: 1;
+  }
+  
+.app-card:focus-visible {
+    outline: 3px solid #00d4ff;
+    outline-offset: 4px;
+    transform: scale(1.05);
   }
   
 .app-icon {
@@ -200,10 +205,9 @@
     box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
   }
   
-.banner-btn:hover,.banner-btn:focus {
+.banner-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
-    outline: none;
   }
   
 .player-overlay {
@@ -237,10 +241,10 @@
     object-fit: cover;
   }
   
-  /* BOTÃO MENOR E DISCRETO */
+  /* SÓ MUDEI AQUI: BOTÃO MENOR */
 .player-menu {
     position: absolute;
-    bottom: 30px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -255,41 +259,40 @@
   }
   
 .menu-btn {
-    padding: 10px 24px;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(10px);
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
+    border-radius: 6px;
     color: #fff;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
   
 .menu-btn:hover,.menu-btn:focus {
-    background: rgba(0, 212, 255, 0.4);
+    background: rgba(0, 212, 255, 0.3);
     border-color: #00d4ff;
     transform: scale(1.05);
     outline: none;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
   }
   
 .menu-btn-icon {
-    font-size: 18px;
+    font-size: 14px;
   }
   
 .player-info {
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 20px;
+    left: 20px;
     color: #fff;
-    font-size: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px 24px;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 20px;
     border-radius: 8px;
     opacity: 0;
     transition: 0.3s;
@@ -401,16 +404,13 @@
 
   function showMenu() {
     playerMenu.classList.add('active');
-    setTimeout(() => {
-      backHomeBtn.focus();
-    }, 50);
+    backHomeBtn.focus();
     clearTimeout(menuTimeout);
-    menuTimeout = setTimeout(hideMenu, 5000);
+    menuTimeout = setTimeout(hideMenu, 4000);
   }
 
   function hideMenu() {
     playerMenu.classList.remove('active');
-    videoPlayer.focus();
   }
 
   function openPlayer(url, appName) {
@@ -459,33 +459,18 @@
   document.addEventListener('keydown', (e) => {
     if (!playerOverlay.classList.contains('active')) return;
     
-    if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8) {
+    if (e.key === 'Escape' || e.key === 'Backspace') {
       e.preventDefault();
-      e.stopPropagation();
       closePlayer();
-      return;
     }
     
-    if (!playerMenu.classList.contains('active')) {
-      if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40) {
-        e.preventDefault();
-        e.stopPropagation();
-        showMenu();
-        return;
-      }
-    }
-    
-    if (playerMenu.classList.contains('active')) {
+    if (e.key === 'Enter' || e.key === 'ArrowDown' || e.key === 'ContextMenu') {
       e.preventDefault();
-      e.stopPropagation();
-      
-      if (e.key === 'Enter' || e.keyCode === 13) {
-        backHomeBtn.click();
-      }
-      
-      if (e.key.startsWith('Arrow') || (e.keyCode >= 37 && e.keyCode <= 40)) {
-        hideMenu();
-      }
+      showMenu();
+    }
+    
+    if (playerMenu.classList.contains('active') && e.key.startsWith('Arrow')) {
+      hideMenu();
     }
   });
 
