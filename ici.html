@@ -331,23 +331,20 @@
     opacity: 1;
   }
 
-  /* MENU LATERAL ESTILO APPLE */
+  /* MENU LATERAL */
   .sidebar {
     position: fixed;
     top: 0;
-    left: -360px;
-    width: 360px;
+    left: -320px;
+    width: 320px;
     height: 100vh;
-    background: rgba(28, 28, 30, 0.75);
-    backdrop-filter: blur(50px) saturate(180%);
-    -webkit-backdrop-filter: blur(50px) saturate(180%);
-    border-right: 0.5px solid rgba(255,255,255,0.15);
+    background: rgba(15, 18, 26, 0.98);
+    backdrop-filter: blur(40px) saturate(180%);
+    border-right: 1px solid rgba(255,255,255,0.1);
     z-index: 10000;
-    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: left 0.3s ease;
     overflow-y: auto;
-    padding: 28px 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-    box-shadow: 2px 0 24px rgba(0,0,0,0.5);
+    padding: 20px 0;
   }
 
   .sidebar.active {
@@ -357,12 +354,11 @@
   .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(2px);
+    background: rgba(0,0,0,0.6);
     z-index: 9999;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s;
   }
 
   .sidebar-overlay.active {
@@ -371,52 +367,41 @@
   }
 
   .sidebar-header {
-    padding: 0 28px 24px;
-    margin-bottom: 8px;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .sidebar-title {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 600;
-    letter-spacing: -0.5px;
-    color: rgba(255,255,255,0.95);
   }
 
   .sidebar-close {
     width: 28px;
     height: 28px;
-    background: rgba(255,255,255,0.08);
-    border: none;
-    border-radius: 50%;
-    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    transition: all 0.2s;
-  }
-
-  .sidebar-close:hover {
-    background: rgba(255,255,255,0.12);
-    transform: scale(1.1);
+    font-size: 18px;
   }
 
   .sidebar-item {
-    margin: 2px 12px;
-    padding: 10px 16px;
+    padding: 14px 20px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: 0.2s;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 15px;
-    font-weight: 400;
-    border-radius: 8px;
-    color: rgba(255,255,255,0.85);
   }
 
   .sidebar-item:hover {
@@ -424,24 +409,20 @@
   }
 
   .sidebar-item.active {
-    background: rgba(10, 132, 255, 0.25);
-    color: #fff;
+    background: rgba(0, 212, 255, 0.15);
+    border-left: 3px solid #00d4ff;
   }
 
   .sidebar-arrow {
-    font-size: 11px;
-    opacity: 0.5;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .sidebar-item.active .sidebar-arrow {
-    transform: rotate(90deg);
+    font-size: 12px;
+    opacity: 0.6;
   }
 
   .submenu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-height 0.3s ease;
+    background: rgba(0,0,0,0.3);
   }
 
   .submenu.active {
@@ -449,19 +430,16 @@
   }
 
   .submenu-item {
-    margin: 2px 12px 2px 28px;
-    padding: 9px 16px;
+    padding: 12px 20px 12px 40px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: 400;
-    color: rgba(255,255,255,0.7);
-    transition: all 0.15s ease;
-    border-radius: 6px;
+    opacity: 0.8;
+    transition: 0.2s;
   }
 
   .submenu-item:hover {
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.05);
+    opacity: 1;
   }
 
   @media (max-width: 1280px) {
