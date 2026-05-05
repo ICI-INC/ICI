@@ -16,16 +16,14 @@
   
   body {
     font-family: 'Roboto', sans-serif;
-    /* FUNDO NOVO - GRADIENTE LIMPO ESTILO ANDROID TV */
     background: radial-gradient(ellipse at top, #1a1d29 0%, #0a0e14 50%, #000000 100%);
     color: #fff;
     min-height: 100vh;
     overflow-x: hidden;
-    padding: 40px 60px;
+    padding: 20px 40px;
     position: relative;
   }
   
-  /* Brilho sutil no fundo */
   body::before {
     content: '';
     position: fixed;
@@ -37,22 +35,22 @@
     z-index: 0;
   }
   
-  .tv-container {
+.tv-container {
     position: relative;
     z-index: 1;
     max-width: 1920px;
     margin: 0 auto;
   }
   
-  .header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
   
-  .logo {
-    font-size: 36px;
+.logo {
+    font-size: 32px;
     font-weight: 700;
     letter-spacing: -1px;
     background: linear-gradient(90deg, #00d4ff, #0099ff);
@@ -62,45 +60,43 @@
     filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.3));
   }
   
-  .header-info {
+.header-info {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
   }
   
-  .time {
-    font-size: 28px;
+.time {
+    font-size: 24px;
     font-weight: 300;
     letter-spacing: 1px;
   }
   
-  .weather {
+.weather {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 24px;
+    font-size: 20px;
     opacity: 0.9;
   }
   
-  .section-title {
-    font-size: 28px;
+.section-title {
+    font-size: 24px;
     font-weight: 500;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     letter-spacing: -0.5px;
   }
   
-  .apps-grid {
+.apps-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 24px;
-    margin-bottom: 60px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
   }
   
-  .app-card {
+.app-card {
     aspect-ratio: 16/9;
-    background: rgba(30, 30, 40, 0.7);
-    backdrop-filter: blur(40px) saturate(180%);
-    border-radius: 16px;
+    border-radius: 12px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
@@ -111,9 +107,10 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(40px) saturate(180%);
   }
   
-  .app-card::before {
+.app-card::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -122,102 +119,99 @@
     transition: 0.3s;
   }
   
-  .app-card:hover {
+.app-card:hover {
     transform: scale(1.05);
     border-color: #00d4ff;
     box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.6);
   }
   
-  .app-card:hover::before {
+.app-card:hover::before {
     opacity: 1;
   }
   
-  .app-card:focus {
+.app-card:focus-visible {
     outline: 3px solid #00d4ff;
     outline-offset: 4px;
     transform: scale(1.05);
   }
   
-  .app-icon {
-    font-size: 56px;
-    margin-bottom: 12px;
+.app-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
   }
   
-  .app-name {
-    font-size: 16px;
+.app-name {
+    font-size: 14px;
     font-weight: 500;
     text-align: center;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   }
   
-  .netflix { background: linear-gradient(135deg, #E50914, #B20710); }
-  .youtube { background: linear-gradient(135deg, #FF0000, #CC0000); }
-  .prime { background: linear-gradient(135deg, #00A8E1, #0077B6); }
-  .globoplay { background: linear-gradient(135deg, #FF6B35, #F7931E); }
-  .disney { background: linear-gradient(135deg, #113CCF, #0A1F44); }
-  .spotify { background: linear-gradient(135deg, #1DB954, #1AA34A); }
+  /* CORES DOS APPS - AGORA FUNCIONA */
+.netflix { background: linear-gradient(135deg, #ff416c, #ff4b2b)!important; } /* CNN */
+.youtube { background: linear-gradient(135deg, #f7971e, #ffd200)!important; } /* RED BULL */
+.prime { background: linear-gradient(135deg, #00c6ff, #0072ff)!important; } /* VEJA */
+.globoplay { background: linear-gradient(135deg, #8e2de2, #4a00e0)!important; } /* Globoplay */
+.disney { background: linear-gradient(135deg, #0575e6, #021b79)!important; } /* Disney */
+.spotify { background: linear-gradient(135deg, #00b09b, #96c93d)!important; } /* Spotify */
   
-  .banner {
+.banner {
     width: 100%;
-    height: 400px;
+    height: 28vh;
+    max-height: 260px;
+    min-height: 180px;
     background: rgba(30, 30, 40, 0.5);
     backdrop-filter: blur(30px) saturate(180%);
-    border-radius: 20px;
-    margin-bottom: 50px;
+    border-radius: 16px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    padding: 60px;
+    padding: 24px 40px;
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
   
-  .banner-content {
+.banner-content {
     max-width: 600px;
     z-index: 1;
   }
   
-  .banner-title {
-    font-size: 48px;
+.banner-title {
+    font-size: clamp(22px, 3vw, 36px);
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     letter-spacing: -1px;
   }
   
-  .banner-desc {
-    font-size: 18px;
+.banner-desc {
+    font-size: 16px;
     opacity: 0.9;
-    margin-bottom: 24px;
-    line-height: 1.6;
+    margin-bottom: 16px;
+    line-height: 1.4;
   }
   
-  .banner-btn {
-    padding: 14px 32px;
+.banner-btn {
+    padding: 10px 24px;
     background: linear-gradient(135deg, #00d4ff, #0099ff);
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
   }
   
-  .banner-btn:hover {
+.banner-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
   }
   
-  .app-card:focus-visible {
-    outline: 4px solid #00d4ff;
-    outline-offset: 6px;
-  }
-  
-  /* PLAYER M3U8 */
-  .player-overlay {
+.player-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.95);
@@ -228,11 +222,11 @@
     flex-direction: column;
   }
   
-  .player-overlay.active {
+.player-overlay.active {
     display: flex;
   }
   
-  .player-wrapper {
+.player-wrapper {
     width: 90%;
     max-width: 1600px;
     aspect-ratio: 16/9;
@@ -249,7 +243,7 @@
     background: #000;
   }
   
-  .close-btn {
+.close-btn {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -269,12 +263,12 @@
     z-index: 10000;
   }
   
-  .close-btn:hover {
+.close-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
   }
   
-  .player-info {
+.player-info {
     color: #fff;
     margin-top: 20px;
     font-size: 18px;
@@ -282,10 +276,18 @@
   }
   
   @media (max-width: 1280px) {
-    body { padding: 30px 40px; }
-    .apps-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-    .banner { height: 320px; padding: 40px; }
-    .banner-title { font-size: 36px; }
+    body { padding: 16px 24px; }
+ .apps-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+ .banner { height: 25vh; padding: 20px 24px; }
+ .banner-title { font-size: 24px; }
+ .banner-desc { font-size: 14px; }
+  }
+  
+  /* FIX: Remove só o blur em TV fraca, NÃO mexe na cor */
+  @media (max-width: 1366px) {
+ .app-card,.banner {
+      backdrop-filter: none;
+    }
   }
 </style>
 </head>
@@ -309,39 +311,38 @@
     
     <h2 class="section-title">Canais</h2>
     <div class="apps-grid">
-      <div class="app-card netflix" tabindex="0" data-url="https://d25usgadhphvwi.cloudfront.net/hls/stv-plus-640x360/playlist.m3u8">
+      <div class="app-card netflix" tabindex="0" data-url="https://d25usgadhphvwi.cloudfront.net/hls/stv-plus-640x360/playlist.m3u8" data-stream="true">
         <div class="app-icon">CNN</div>
-        <div class="app-name"></div>
+        <div class="app-name">CNN Brasil</div>
       </div>
       
-      <div class="app-card youtube" tabindex="0" data-url="https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-1026-WORBBRPTFAST-WHALETVPLUS/1026/hls/master/playlist.m3u8">
+      <div class="app-card youtube" tabindex="0" data-url="https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-1026-WORBBRPTFAST-WHALETVPLUS/1026/hls/master/playlist.m3u8" data-stream="true">
         <div class="app-icon">Sport</div>
         <div class="app-name">RED BULL</div>
       </div>
       
-      <div class="app-card prime" tabindex="0" data-url="https://cdn-5.nxplay.com.br/VEJA_PLUS_FAST/tracks-v1a1/mono.ts.m3u8">
+      <div class="app-card prime" tabindex="0" data-url="https://cdn-5.nxplay.com.br/VEJA_PLUS_FAST/tracks-v1a1/mono.ts.m3u8" data-stream="true">
         <div class="app-icon">VEJA</div>
-        <div class="app-name"></div>
+        <div class="app-name">VEJA+</div>
       </div>
       
-      <div class="app-card globoplay" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz.m3u8">
+      <div class="app-card globoplay" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz.m3u8" data-stream="true">
         <div class="app-icon">G</div>
         <div class="app-name">Globoplay</div>
       </div>
       
-      <div class="app-card disney" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
+      <div class="app-card disney" tabindex="0">
         <div class="app-icon">D+</div>
         <div class="app-name">Disney+</div>
       </div>
       
-      <div class="app-card spotify" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz.m3u8">
+      <div class="app-card spotify" tabindex="0">
         <div class="app-icon">♪</div>
         <div class="app-name">Spotify</div>
       </div>
     </div>
   </div>
 
-  <!-- PLAYER OVERLAY -->
   <div class="player-overlay" id="playerOverlay">
     <button class="close-btn" id="closeBtn">×</button>
     <div class="player-wrapper">
@@ -351,7 +352,6 @@
   </div>
 
 <script>
-  // Atualiza hora
   function updateTime() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
@@ -361,34 +361,39 @@
   updateTime();
   setInterval(updateTime, 60000);
   
-  // PLAYER M3U8
   const playerOverlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('videoPlayer');
   const closeBtn = document.getElementById('closeBtn');
   const playerInfo = document.getElementById('playerInfo');
   let hls = null;
   
-  // Função pra abrir player com m3u8
   function openPlayer(url, appName) {
     playerOverlay.classList.add('active');
-    playerInfo.textContent = `Reproduzindo: ${appName}`;
+    playerInfo.textContent = `Carregando: ${appName}`;
     
     if (Hls.isSupported()) {
       if (hls) hls.destroy();
-      hls = new Hls();
+      hls = new Hls({ enableWorker: true });
       hls.loadSource(url);
       hls.attachMedia(videoPlayer);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         videoPlayer.play();
+        playerInfo.textContent = `Reproduzindo: ${appName}`;
+      });
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          playerInfo.textContent = `Erro: canal indisponível`;
+          setTimeout(closePlayer, 2000);
+          hls.destroy();
+        }
       });
     } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari nativo
       videoPlayer.src = url;
       videoPlayer.play();
+      playerInfo.textContent = `Reproduzindo: ${appName}`;
     }
   }
   
-  // Fecha player
   function closePlayer() {
     playerOverlay.classList.remove('active');
     videoPlayer.pause();
@@ -401,20 +406,44 @@
   
   closeBtn.addEventListener('click', closePlayer);
   
-  // ESC fecha player
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && playerOverlay.classList.contains('active')) {
       closePlayer();
     }
   });
   
-  // Clique nos apps
-  document.querySelectorAll('.app-card, .banner-btn').forEach(card => {
+  playerOverlay.addEventListener('click', (e) => {
+    if (e.target === playerOverlay) closePlayer();
+  });
+  
+  document.querySelectorAll('.app-card,.banner-btn').forEach(card => {
     card.addEventListener('click', () => {
       const url = card.getAttribute('data-url');
-      const name = card.querySelector('.app-name')?.textContent || 'Vídeo';
-      if (url) {
-        openPlayer(url, name);
+      const isStream = card.hasAttribute('data-stream') || card.classList.contains('banner-btn');
+      if (!url ||!isStream) return;
+      
+      const name = card.querySelector('.app-name')?.textContent.trim() 
+                || card.querySelector('.app-icon')?.textContent.trim() 
+                || 'Canal';
+      openPlayer(url, name);
+    });
+  });
+  
+  const cards = Array.from(document.querySelectorAll('.app-card'));
+  cards.forEach((card, idx) => {
+    card.addEventListener('keydown', e => {
+      let nextIdx = idx;
+      const cols = Math.floor(window.innerWidth / 180);
+      
+      if (e.key === 'ArrowRight' && idx < cards.length - 1) nextIdx = idx + 1;
+      if (e.key === 'ArrowLeft' && idx > 0) nextIdx = idx - 1;
+      if (e.key === 'ArrowDown') nextIdx = Math.min(idx + cols, cards.length - 1);
+      if (e.key === 'ArrowUp') nextIdx = Math.max(idx - cols, 0);
+      if (e.key === 'Enter' || e.key === ' ') card.click();
+      
+      if (nextIdx!== idx) {
+        e.preventDefault();
+        cards[nextIdx].focus();
       }
     });
   });
