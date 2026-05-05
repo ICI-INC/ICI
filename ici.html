@@ -111,36 +111,21 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: 0.2s ease;
     position: relative;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(40px) saturate(180%);
   }
   
-.app-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-    opacity: 0;
-    transition: 0.3s;
-  }
-  
 .app-card:hover {
-    transform: scale(1.05);
-    border-color: #00d4ff;
-    box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.6);
-  }
-  
-.app-card:hover::before {
-    opacity: 1;
+    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.3);
   }
   
 .app-card:focus-visible {
-    outline: 3px solid #00d4ff;
-    outline-offset: 4px;
-    transform: scale(1.05);
+    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.4);
   }
   
 .app-icon {
@@ -210,12 +195,10 @@
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
-    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
   }
   
 .banner-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
+    transform: scale(1.02);
   }
   
 .player-overlay {
