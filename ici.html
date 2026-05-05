@@ -466,13 +466,7 @@
     document.querySelector('.app-card')?.focus();
   }
 
-  backHomeBtn.addEventListener('click', closePlayer);
-  backHomeBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
-      e.preventDefault();
-      closePlayer();
-    }
-  });
+  backHomeBtn.onclick = closePlayer;
 
   videoPlayer.addEventListener('click', showMenu);
 
