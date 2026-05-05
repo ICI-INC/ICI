@@ -256,12 +256,11 @@
   
 .player-menu {
     position: absolute;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 12px;
+    left: 12px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
     z-index: 10001;
   }
   
@@ -271,41 +270,38 @@
   }
   
 .menu-btn {
-    padding: 4px 8px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    color: #fff;
-    font-size: 11px;
-    font-weight: 500;
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
-    gap: 3px;
+    justify-content: center;
+    padding: 0;
   }
   
 .menu-btn:hover,.menu-btn:focus {
-    background: rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.4);
     border-color: #00d4ff;
-    transform: scale(1.05);
-    outline: none;
-  }
-  
-.menu-btn-icon {
-    font-size: 12px;
+    color: #fff;
+    transform: scale(1.1);
   }
   
 .player-info {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 12px;
+    left: 44px;
     color: #fff;
-    font-size: 18px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 8px 20px;
-    border-radius: 8px;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 10px;
+    border-radius: 3px;
     opacity: 0;
     transition: 0.3s;
     pointer-events: none;
@@ -388,9 +384,8 @@
       <div class="player-info" id="playerInfo">Reproduzindo...</div>
       
       <div class="player-menu" id="playerMenu">
-        <button class="menu-btn" id="backHomeBtn" tabindex="0">
-          <span class="menu-btn-icon">🏠</span>
-          Voltar
+        <button class="menu-btn" id="backHomeBtn" tabindex="0" title="Voltar">
+          ←
         </button>
       </div>
     </div>
@@ -416,13 +411,16 @@
 
   function showMenu() {
     playerMenu.classList.add('active');
-    backHomeBtn.focus();
+    setTimeout(() => {
+      backHomeBtn.focus();
+    }, 50);
     clearTimeout(menuTimeout);
     menuTimeout = setTimeout(hideMenu, 4000);
   }
 
   function hideMenu() {
     playerMenu.classList.remove('active');
+    videoPlayer.focus();
   }
 
   function openPlayer(url, appName) {
@@ -467,22 +465,39 @@
   }
 
   backHomeBtn.addEventListener('click', closePlayer);
+  backHomeBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+      e.preventDefault();
+      e.stopPropagation();
+      closePlayer();
+    }
+  });
 
   document.addEventListener('keydown', (e) => {
     if (!playerOverlay.classList.contains('active')) return;
     
-    if (e.key === 'Escape' || e.key === 'Backspace') {
+    if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8) {
       e.preventDefault();
+      e.stopPropagation();
       closePlayer();
+      return;
     }
     
-    if (e.key === 'Enter' || e.key === 'ArrowDown' || e.key === 'ContextMenu') {
-      e.preventDefault();
-      showMenu();
+    if (!playerMenu.classList.contains('active')) {
+      if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38) {
+        e.preventDefault();
+        e.stopPropagation();
+        showMenu();
+        return;
+      }
     }
     
-    if (playerMenu.classList.contains('active') && e.key.startsWith('Arrow')) {
-      hideMenu();
+    if (playerMenu.classList.contains('active')) {
+      if (e.key.startsWith('Arrow') || (e.keyCode >= 37 && e.keyCode <= 40)) {
+        e.preventDefault();
+        e.stopPropagation();
+        hideMenu();
+      }
     }
   });
 
@@ -492,7 +507,7 @@
   playerOverlay.addEventListener('mousemove', () => {
     showMenu();
     clearTimeout(mouseTimeout);
-    mouseTimeout = setTimeout(hideMenu, 3000);
+    mouseTimeout = setTimeout(hideMenu, 2000);
   });
 
   playerOverlay.addEventListener('click', (e) => {
