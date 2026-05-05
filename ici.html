@@ -148,13 +148,12 @@
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   }
   
-  /* CORES DOS APPS - AGORA FUNCIONA */
-.netflix { background: linear-gradient(135deg, #ff416c, #ff4b2b)!important; } /* CNN */
-.youtube { background: linear-gradient(135deg, #f7971e, #ffd200)!important; } /* RED BULL */
-.prime { background: linear-gradient(135deg, #00c6ff, #0072ff)!important; } /* VEJA */
-.globoplay { background: linear-gradient(135deg, #8e2de2, #4a00e0)!important; } /* Globoplay */
-.disney { background: linear-gradient(135deg, #0575e6, #021b79)!important; } /* Disney */
-.spotify { background: linear-gradient(135deg, #00b09b, #96c93d)!important; } /* Spotify */
+.netflix { background: linear-gradient(135deg, #ff416c, #ff4b2b)!important; }
+.youtube { background: linear-gradient(135deg, #f7971e, #ffd200)!important; }
+.prime { background: linear-gradient(135deg, #00c6ff, #0072ff)!important; }
+.globoplay { background: linear-gradient(135deg, #8e2de2, #4a00e0)!important; }
+.disney { background: linear-gradient(135deg, #0575e6, #021b79)!important; }
+.spotify { background: linear-gradient(135deg, #00b09b, #96c93d)!important; }
   
 .banner {
     width: 100%;
@@ -211,10 +210,11 @@
     box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
   }
   
+  /* PLAYER TELA CHEIA AUTOMÁTICO */
 .player-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: #000;
     z-index: 9999;
     display: none;
     align-items: center;
@@ -227,20 +227,19 @@
   }
   
 .player-wrapper {
-    width: 90%;
-    max-width: 1600px;
-    aspect-ratio: 16/9;
+    width: 100vw;
+    height: 100vh;
     position: relative;
     background: #000;
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 0 80px rgba(0, 212, 255, 0.3);
   }
   
   #videoPlayer {
     width: 100%;
     height: 100%;
     background: #000;
+    object-fit: cover;
   }
   
 .close-btn {
@@ -249,9 +248,9 @@
     right: 20px;
     width: 50px;
     height: 50px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     color: #fff;
     font-size: 28px;
@@ -261,31 +260,42 @@
     justify-content: center;
     transition: 0.2s;
     z-index: 10000;
+    opacity: 0;
   }
   
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+ .player-wrapper:hover.close-btn {
+    opacity: 1;
   }
   
 .player-info {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     color: #fff;
-    margin-top: 20px;
     font-size: 18px;
-    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    transition: 0.3s;
+    pointer-events: none;
+  }
+  
+ .player-wrapper:hover.player-info {
+    opacity: 1;
   }
   
   @media (max-width: 1280px) {
     body { padding: 16px 24px; }
- .apps-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
- .banner { height: 25vh; padding: 20px 24px; }
- .banner-title { font-size: 24px; }
- .banner-desc { font-size: 14px; }
+.apps-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.banner { height: 25vh; padding: 20px 24px; }
+.banner-title { font-size: 24px; }
+.banner-desc { font-size: 14px; }
   }
   
-  /* FIX: Remove só o blur em TV fraca, NÃO mexe na cor */
   @media (max-width: 1366px) {
- .app-card,.banner {
+.app-card,.banner {
       backdrop-filter: none;
     }
   }
@@ -305,7 +315,7 @@
       <div class="banner-content">
         <h1 class="banner-title">Destaque da Semana</h1>
         <p class="banner-desc">Assista aos melhores filmes e séries. Novos lançamentos toda semana.</p>
-        <button class="banner-btn" data-url="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">Assistir Agora</button>
+        <button class="banner-btn" data-url="https://test-streams.mux.dev/x36xhzz.m3u8">Assistir Agora</button>
       </div>
     </div>
     
