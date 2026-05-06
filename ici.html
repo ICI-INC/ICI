@@ -84,7 +84,6 @@
     margin-bottom: 8px;
   }
 
-  /* CARROSSEL HORIZONTAL IGUAL ANDROID TV */
   .apps-row {
     display: flex;
     gap: 10px;
@@ -140,7 +139,7 @@
     opacity: 0.95;
   }
 
-  /* CORES INDIVIDUAIS PRA CADA CANAL */
+  /* CORES DE CADA CANAL */
   .cnn { background: linear-gradient(135deg, #cc0000, #990000)!important; }
   .redbull { background: linear-gradient(135deg, #001e50, #0033a0)!important; }
   .veja { background: linear-gradient(135deg, #ffcc00, #ff9900)!important; }
@@ -220,16 +219,38 @@
   #videoPlayer { width: 100%; height: 100%; background: #000; object-fit: cover; border: 0!important; }
   video::-webkit-media-controls { display: none!important; }
 
-  .player-menu { position: absolute; top: 12px; left: 12px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10001; }
+  .player-menu { position: absolute; top: 16px; left: 16px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10001; }
   .player-menu.active { opacity: 1; pointer-events: all; }
 
+  /* BOTÃO VOLTAR CORRIGIDO PRA PHILIPS */
   .menu-btn {
-    width: 24px; height: 24px; background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 3px; color: rgba(255, 255, 255, 0.8);
-    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+    width: 32px; 
+    height: 32px; 
+    background: #00d4ff;
+    border: 3px solid #ffffff;
+    border-radius: 6px; 
+    color: #000;
+    font-size: 18px; 
+    font-weight: 900;
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 0;
+    transition: 0.1s ease;
+    /* Hack pra Philips renderizar */
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.9);
   }
 
-  .player-info { position: absolute; top: 12px; left: 44px; color: #fff; font-size: 12px; background: rgba(0, 0, 0, 0.5); padding: 4px 10px; border-radius: 3px; opacity: 0; transition: 0.3s; pointer-events: none; }
+  /* Quando não tá focado, fica mais escuro */
+  .player-menu:not(.active) .menu-btn {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255,255,255,0.4);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .player-info { position: absolute; top: 16px; left: 56px; color: #fff; font-size: 12px; background: rgba(0, 0, 0, 0.7); padding: 6px 12px; border-radius: 4px; opacity: 0; transition: 0.3s; pointer-events: none; }
   .player-wrapper:hover .player-info { opacity: 1; }
 
   .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: rgba(15, 18, 26, 0.98); border-right: 1px solid rgba(255,255,255,0.1); z-index: 10000; transition: left 0.3s; overflow-y: auto; padding: 20px 0; }
@@ -401,10 +422,14 @@
 
   function showMenu() {
     playerMenu.classList.add('active');
-    setTimeout(() => {
-      backHomeBtn.focus();
-    }, 50);
     clearTimeout(menuTimeout);
+    // Hack pra Philips: força reflow e focus
+    setTimeout(() => {
+      backHomeBtn.style.display = 'none';
+      backHomeBtn.offsetHeight; // força reflow
+      backHomeBtn.style.display = 'flex';
+      backHomeBtn.focus();
+    }, 150);
     menuTimeout = setTimeout(hideMenu, 4000);
   }
 
@@ -439,7 +464,7 @@
       playerInfo.textContent = `Reproduzindo: ${appName}`;
     }
 
-    setTimeout(showMenu, 500);
+    setTimeout(showMenu, 600);
   }
 
   function closePlayer() {
@@ -474,19 +499,11 @@
     }
 
     if (!playerMenu.classList.contains('active')) {
-      if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38) {
+      if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38 || e.key === 'ArrowLeft' || e.keyCode === 37 || e.key === 'ArrowRight' || e.keyCode === 39) {
         e.preventDefault();
         e.stopPropagation();
         showMenu();
         return;
-      }
-    }
-
-    if (playerMenu.classList.contains('active')) {
-      if (e.key.startsWith('Arrow') || (e.keyCode >= 37 && e.keyCode <= 40)) {
-        e.preventDefault();
-        e.stopPropagation();
-        hideMenu();
       }
     }
   });
@@ -504,7 +521,6 @@
     if (e.target === playerOverlay) closePlayer();
   });
 
-  // CLIQUE NOS CARDS
   document.querySelectorAll('.app-card,.banner-btn').forEach(card => {
     card.addEventListener('click', () => {
       lastFocusedCard = card;
@@ -519,7 +535,6 @@
     });
   });
 
-  // NAVEGAÇÃO HORIZONTAL - SÓ ESQUERDA/DIREITA
   const appsRow = document.getElementById('appsRow');
   const cards = Array.from(document.querySelectorAll('.app-card'));
   
@@ -542,14 +557,12 @@
     });
   });
 
-  // Foca no primeiro card ao carregar
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.querySelector('.app-card')?.focus();
     }, 100);
   });
 
-  // MENU LATERAL
   const menuToggle = document.getElementById('menuToggle');
   const sidebar = document.getElementById('sidebar');
   const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -572,7 +585,6 @@
   sidebarClose.addEventListener('click', closeSidebar);
   sidebarOverlay.addEventListener('click', closeSidebar);
 
-  // SUBMENU
   document.querySelectorAll('.sidebar-item[data-submenu]').forEach(item => {
     item.addEventListener('click', () => {
       const submenuId = item.getAttribute('data-submenu');
@@ -585,7 +597,6 @@
     });
   });
 
-  // CLIQUE NOS ITENS DO SUBMENU
   document.querySelectorAll('.submenu-item[data-link]').forEach(item => {
     item.addEventListener('click', () => {
       const link = item.getAttribute('data-link');
@@ -596,7 +607,6 @@
     });
   });
 
-  // Carrega foto do banner
   const banner = document.querySelector('.banner[data-bg]');
   if (banner) {
     const bgUrl = banner.getAttribute('data-bg');
