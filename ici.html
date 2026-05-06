@@ -48,21 +48,54 @@
 
   .header-left { display: flex; align-items: center; gap: 12px; }
 
+  /* BOTÃO MENU COM FEEDBACK HÁPTICO VISUAL */
   .menu-toggle {
-    width: 22px;
-    height: 22px;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 4px;
+    width: 26px;
+    height: 26px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
+    transition: all 0.15s ease;
+    position: relative;
   }
 
-  .menu-toggle span { width: 12px; height: 2px; background: #fff; border-radius: 2px; }
+  .menu-toggle span { 
+    width: 14px; 
+    height: 2px; 
+    background: #fff; 
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .menu-toggle:focus {
+    background: rgba(0, 212, 255, 0.25);
+    border-color: #00d4ff;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.4), 0 0 16px rgba(0, 212, 255, 0.5);
+    transform: scale(1.1);
+  }
+
+  /* CLIQUE: encolhe + pulso azul */
+  .menu-toggle.pressed {
+    transform: scale(0.88);
+    background: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 0 24px rgba(0, 212, 255, 0.8);
+  }
+
+  .menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(3px, 3px);
+  }
+  .menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(3px, -3px);
+  }
 
   .logo {
     font-size: 20px;
@@ -139,7 +172,6 @@
     opacity: 0.95;
   }
 
-  /* CORES DE CADA CANAL */
   .cnn { background: linear-gradient(135deg, #cc0000, #990000)!important; }
   .redbull { background: linear-gradient(135deg, #001e50, #0033a0)!important; }
   .veja { background: linear-gradient(135deg, #ffcc00, #ff9900)!important; }
@@ -206,6 +238,7 @@
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
+    transition: 0.15s ease;
   }
 
   .banner-btn:focus {
@@ -222,7 +255,6 @@
   .player-menu { position: absolute; top: 16px; left: 16px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10001; }
   .player-menu.active { opacity: 1; pointer-events: all; }
 
-  /* BOTÃO VOLTAR CORRIGIDO PRA PHILIPS */
   .menu-btn {
     width: 32px; 
     height: 32px; 
@@ -238,11 +270,9 @@
     justify-content: center; 
     padding: 0;
     transition: 0.1s ease;
-    /* Hack pra Philips renderizar */
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.9);
   }
 
-  /* Quando não tá focado, fica mais escuro */
   .player-menu:not(.active) .menu-btn {
     background: rgba(0, 0, 0, 0.7);
     border-color: rgba(255,255,255,0.4);
@@ -259,15 +289,38 @@
   .sidebar-overlay.active { opacity: 1; pointer-events: all; }
   .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
   .sidebar-title { font-size: 20px; font-weight: 600; }
-  .sidebar-close { width: 28px; height: 28px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  
+  .sidebar-close { 
+    width: 30px; 
+    height: 30px; 
+    background: rgba(255,255,255,0.08); 
+    border: 2px solid rgba(255,255,255,0.15); 
+    border-radius: 6px; 
+    color: #fff; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 20px;
+    font-weight: 300;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-close:focus {
+    background: rgba(0, 212, 255, 0.25);
+    border-color: #00d4ff;
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.4), 0 0 18px rgba(0, 212, 255, 0.5);
+    transform: scale(1.08);
+  }
+
   .sidebar-item { padding: 14px 20px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
-  .sidebar-item:hover { background: rgba(255,255,255,0.08); }
+  .sidebar-item:focus { background: rgba(0, 212, 255, 0.15); border-left: 3px solid #00d4ff; }
   .sidebar-item.active { background: rgba(0, 212, 255, 0.15); border-left: 3px solid #00d4ff; }
   .sidebar-arrow { font-size: 12px; opacity: 0.6; }
   .submenu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.3); }
   .submenu.active { max-height: 500px; }
   .submenu-item { padding: 12px 20px 12px 40px; cursor: pointer; font-size: 14px; opacity: 0.8; transition: 0.2s; }
-  .submenu-item:hover { background: rgba(255,255,255,0.05); opacity: 1; }
+  .submenu-item:focus { background: rgba(0, 212, 255, 0.15); opacity: 1; }
 
   @media (max-width: 1366px) {
     .app-card,.banner { backdrop-filter: none; }
@@ -279,22 +332,22 @@
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">Menu</div>
-      <button class="sidebar-close" id="sidebarClose">×</button>
+      <button class="sidebar-close" id="sidebarClose" tabindex="0">×</button>
     </div>
     
-    <div class="sidebar-item" data-submenu="config">
+    <div class="sidebar-item" data-submenu="config" tabindex="0">
       <span>Configurações</span>
       <span class="sidebar-arrow">▶</span>
     </div>
     <div class="submenu" id="submenu-config">
-      <div class="submenu-item" data-link="https://seu-link-de-pagamento.com">Pagamento</div>
+      <div class="submenu-item" data-link="https://seu-link-de-pagamento.com" tabindex="0">Pagamento</div>
     </div>
   </div>
 
   <div class="tv-container">
     <div class="header">
       <div class="header-left">
-        <button class="menu-toggle" id="menuToggle">
+        <button class="menu-toggle" id="menuToggle" tabindex="0">
           <span></span>
           <span></span>
           <span></span>
@@ -311,7 +364,7 @@
       <div class="banner-content">
         <h1 class="banner-title">Destaque da Semana</h1>
         <p class="banner-desc">Assista aos melhores filmes e séries. Novos lançamentos toda semana.</p>
-        <button class="banner-btn" data-url="https://test-streams.mux.dev/x36xhzz.m3u8">Assistir Agora</button>
+        <button class="banner-btn" data-url="https://test-streams.mux.dev/x36xhzz.m3u8" tabindex="0">Assistir Agora</button>
       </div>
     </div>
 
@@ -423,10 +476,9 @@
   function showMenu() {
     playerMenu.classList.add('active');
     clearTimeout(menuTimeout);
-    // Hack pra Philips: força reflow e focus
     setTimeout(() => {
       backHomeBtn.style.display = 'none';
-      backHomeBtn.offsetHeight; // força reflow
+      backHomeBtn.offsetHeight;
       backHomeBtn.style.display = 'flex';
       backHomeBtn.focus();
     }, 150);
@@ -479,7 +531,6 @@
     lastFocusedCard?.focus() || document.querySelector('.app-card')?.focus();
   }
 
-  backHomeBtn.addEventListener('click', closePlayer);
   backHomeBtn.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
       e.preventDefault();
@@ -489,40 +540,45 @@
   });
 
   document.addEventListener('keydown', (e) => {
-    if (!playerOverlay.classList.contains('active')) return;
+    if (playerOverlay.classList.contains('active')) {
+      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
+        e.preventDefault();
+        e.stopPropagation();
+        closePlayer();
+        return;
+      }
 
-    if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8) {
-      e.preventDefault();
-      e.stopPropagation();
-      closePlayer();
+      if (!playerMenu.classList.contains('active')) {
+        if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38 || e.key === 'ArrowLeft' || e.keyCode === 37 || e.key === 'ArrowRight' || e.keyCode === 39) {
+          e.preventDefault();
+          e.stopPropagation();
+          showMenu();
+          return;
+        }
+      }
       return;
     }
 
-    if (!playerMenu.classList.contains('active')) {
-      if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38 || e.key === 'ArrowLeft' || e.keyCode === 37 || e.key === 'ArrowRight' || e.keyCode === 39) {
+    if (sidebar.classList.contains('active')) {
+      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
         e.preventDefault();
-        e.stopPropagation();
-        showMenu();
+        closeSidebar();
         return;
+      }
+      return;
+    }
+
+    if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
+      e.preventDefault();
+      if (confirm('Deseja sair do app?')) {
+        window.close();
       }
     }
   });
 
-  videoPlayer.addEventListener('click', showMenu);
-
-  let mouseTimeout;
-  playerOverlay.addEventListener('mousemove', () => {
-    showMenu();
-    clearTimeout(mouseTimeout);
-    mouseTimeout = setTimeout(hideMenu, 2000);
-  });
-
-  playerOverlay.addEventListener('click', (e) => {
-    if (e.target === playerOverlay) closePlayer();
-  });
-
   document.querySelectorAll('.app-card,.banner-btn').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
       lastFocusedCard = card;
       const url = card.getAttribute('data-url');
       const isStream = card.hasAttribute('data-stream') || card.classList.contains('banner-btn');
@@ -554,7 +610,22 @@
         e.preventDefault();
         card.click();
       }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        document.querySelector('.banner-btn')?.focus();
+      }
     });
+  });
+
+  document.querySelector('.banner-btn')?.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      cards[0]?.focus();
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.target.click();
+    }
   });
 
   window.addEventListener('load', () => {
@@ -571,39 +642,95 @@
   function openSidebar() {
     sidebar.classList.add('active');
     sidebarOverlay.classList.add('active');
+    menuToggle.classList.add('active');
+    setTimeout(() => {
+      document.querySelector('.sidebar-item')?.focus();
+    }, 300);
   }
 
   function closeSidebar() {
     sidebar.classList.remove('active');
     sidebarOverlay.classList.remove('active');
+    menuToggle.classList.remove('active');
     document.querySelectorAll('.submenu').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.sidebar-arrow').forEach(a => a.textContent = '▶');
+    menuToggle.focus();
   }
 
-  menuToggle.addEventListener('click', openSidebar);
-  sidebarClose.addEventListener('click', closeSidebar);
-  sidebarOverlay.addEventListener('click', closeSidebar);
+  menuToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      menuToggle.classList.add('pressed');
+      setTimeout(() => menuToggle.classList.remove('pressed'), 150);
+      if (sidebar.classList.contains('active')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    }
+  });
 
-  document.querySelectorAll('.sidebar-item[data-submenu]').forEach(item => {
-    item.addEventListener('click', () => {
-      const submenuId = item.getAttribute('data-submenu');
-      const submenu = document.getElementById(`submenu-${submenuId}`);
-      const arrow = item.querySelector('.sidebar-arrow');
-      
-      submenu.classList.toggle('active');
-      item.classList.toggle('active');
-      arrow.textContent = submenu.classList.contains('active') ? '▼' : '▶';
+  sidebarClose.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      closeSidebar();
+    }
+  });
+
+  document.querySelectorAll('.sidebar-item').forEach((item, idx, arr) => {
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' && idx < arr.length - 1) {
+        e.preventDefault();
+        arr[idx + 1].focus();
+      }
+      if (e.key === 'ArrowUp' && idx > 0) {
+        e.preventDefault();
+        arr[idx - 1].focus();
+      }
+      if (e.key === 'ArrowUp' && idx === 0) {
+        e.preventDefault();
+        sidebarClose.focus();
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const submenuId = item.getAttribute('data-submenu');
+        if (submenuId) {
+          const submenu = document.getElementById(`submenu-${submenuId}`);
+          const arrow = item.querySelector('.sidebar-arrow');
+          submenu.classList.toggle('active');
+          item.classList.toggle('active');
+          arrow.textContent = submenu.classList.contains('active') ? '▼' : '▶';
+          if (submenu.classList.contains('active')) {
+            submenu.querySelector('.submenu-item')?.focus();
+          }
+        }
+      }
     });
   });
 
-  document.querySelectorAll('.submenu-item[data-link]').forEach(item => {
-    item.addEventListener('click', () => {
-      const link = item.getAttribute('data-link');
-      if (link) {
-        window.open(link, '_blank');
+  document.querySelectorAll('.submenu-item').forEach((item, idx, arr) => {
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' && idx < arr.length - 1) {
+        e.preventDefault();
+        arr[idx + 1].focus();
       }
-      closeSidebar();
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (idx > 0) {
+          arr[idx - 1].focus();
+        } else {
+          document.querySelector('.sidebar-item.active')?.focus();
+        }
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const link = item.getAttribute('data-link');
+        if (link) {
+          window.open(link, '_blank');
+        }
+        closeSidebar();
+      }
     });
   });
 
