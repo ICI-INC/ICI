@@ -479,6 +479,34 @@
 .player-info.loading {
   opacity: 0;
 }
+
+/* Botão voltar - movimento + luz azul fraca no clique */
+#backHomeBtn {
+  background: #141414;
+  border: 2px solid transparent;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+#backHomeBtn:focus {
+  outline: none;
+  border-color: rgba(64, 156, 255, 0.3);
+  box-shadow: 0 0 8px rgba(64, 156, 255, 0.15);
+}
+#backHomeBtn:active,
+#backHomeBtn.pressed {
+  transform: scale(0.88) translateX(-4px);
+  border-color: rgba(64, 156, 255, 0.45);
+  box-shadow: 0 0 12px rgba(64, 156, 255, 0.25);
+  background: #1a1a1a;
+}
 </style>
 
 <script>
@@ -615,12 +643,22 @@
     lastFocusedCard?.focus() || document.querySelector('.app-card')?.focus();
   }
 
+  // Botão voltar: animação no controle remoto e mouse
   backHomeBtn.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
       e.preventDefault();
       e.stopPropagation();
+      backHomeBtn.classList.add('pressed');
+      setTimeout(() => backHomeBtn.classList.remove('pressed'), 120);
       closePlayer();
     }
+  });
+
+  backHomeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    backHomeBtn.classList.add('pressed');
+    setTimeout(() => backHomeBtn.classList.remove('pressed'), 120);
+    closePlayer();
   });
 
   document.addEventListener('keydown', (e) => {
