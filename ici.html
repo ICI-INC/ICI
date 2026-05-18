@@ -3,885 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICI</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<title>ICIFLIX</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  :root {
+    --bg: #0d0d0f;
+    --accent: #E50914;
+    --text: #e8eaed;
+    --text-dim: #9aa0a6;
+  }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-  *:focus { outline: none!important; -webkit-tap-highlight-color: transparent!important; }
+  
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  }
 
   body {
-    font-family: 'Roboto', sans-serif;
-    background: radial-gradient(ellipse at top, #1a1d29 0%, #0a0e14 50%, #000000 100%);
-    color: #fff;
-    min-height: 100vh;
-    overflow: hidden;
-    padding: 12px 20px;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.06), transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.06), transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-.tv-container {
-    position: relative;
-    z-index: 1;
-    max-width: 1920px;
-    margin: 0 auto;
-  }
-
-.header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-  }
-
-.header-left { display: flex; align-items: center; gap: 12px; }
-
-.menu-toggle {
-    width: 26px;
-    height: 26px;
-    background: rgba(255,255,255,0.08);
-    border: 2px solid rgba(255,255,255,0.15);
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: 3px;
-    transition: all 0.15s ease;
-    position: relative;
+    background: radial-gradient(ellipse at center, #1a0a0a 0%, var(--bg) 70%);
   }
 
-.menu-toggle span {
-    width: 14px;
-    height: 2px;
-    background: #fff;
-    border-radius: 2px;
-    transition: all 0.2s ease;
-  }
-
-.menu-toggle:focus {
-    background: rgba(0, 212, 255, 0.25);
-    border-color: #00d4ff;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.4), 0 0 16px rgba(0, 212, 255, 0.5);
-    transform: scale(1.1);
-  }
-
-.menu-toggle.pressed {
-    transform: scale(0.88);
-    background: rgba(0, 212, 255, 0.5);
-    box-shadow: 0 0 24px rgba(0, 212, 255, 0.8);
-  }
-
-.menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(3px, 3px);
-  }
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-.menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(3px, -3px);
-  }
-
-.logo {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -1px;
-    background: linear-gradient(90deg, #00d4ff, #0099ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-.header-info { display: flex; gap: 14px; align-items: center; }
-.time { font-size: 17px; font-weight: 300; }
-.weather {
-    font-size: 15px;
-    opacity: 0.9;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-.weather-icon { font-size: 18px; }
-
-.section-title {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-
-.apps-row {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    padding: 4px 2px 12px 2px;
-    margin-bottom: 20px;
-    scroll-snap-type: x mandatory;
-  }
-
-.apps-row::-webkit-scrollbar { display: none; }
-.apps-row { -ms-overflow-style: none; scrollbar-width: none; }
-
-.app-card {
-    flex: 0 0 140px;
-    aspect-ratio: 16/9;
-    border-radius: 6px;
-    border: 2px solid transparent;
+  .splash {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.15s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    scroll-snap-align: start;
+    gap: 32px;
+    animation: fadeIn 0.5s ease;
   }
 
-.app-card:focus {
-    transform: scale(1.1);
-    border-color: #00d4ff;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.6), 0 8px 24px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-  }
-
-.app-icon {
-    font-size: 22px;
-    margin-bottom: 2px;
-    font-weight: 700;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
-  }
-
-.app-name {
-    font-size: 10px;
-    font-weight: 500;
-    text-align: center;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-    padding: 0 4px;
-    line-height: 1.1;
-    opacity: 0.95;
-  }
-
-.cnn { background: linear-gradient(135deg, #cc0000, #990000)!important; }
-.redbull { background: linear-gradient(135deg, #001e50, #0033a0)!important; }
-.veja { background: linear-gradient(135deg, #ffcc00, #ff9900)!important; }
-.sbt { background: linear-gradient(135deg, #0099ff, #0066cc)!important; }
-.novelas { background: linear-gradient(135deg, #9c27b0, #6a1b9a)!important; }
-.sony { background: linear-gradient(135deg, #000000, #333333)!important; }
-.puratv { background: linear-gradient(135deg, #00bcd4, #0097a7)!important; }
-.moviesphere { background: linear-gradient(135deg, #ff5722, #d84315)!important; }
-.mytime { background: linear-gradient(135deg, #4caf50, #2e7d32)!important; }
-.runtime-acao { background: linear-gradient(135deg, #f44336, #c62828)!important; }
-.runtime-br { background: linear-gradient(135deg, #009688, #00695c)!important; }
-.runtime-terror { background: linear-gradient(135deg, #424242, #212121)!important; }
-.runtime-romance { background: linear-gradient(135deg, #e91e63, #ad1457)!important; }
-.runtime-crime { background: linear-gradient(135deg, #3f51b5, #283593)!important; }
-.youtube { background: linear-gradient(135deg, #ff0000, #cc0000)!important; }
-.netflix { background: linear-gradient(135deg, #e50914, #b20710)!important; }
-.pluto { background: linear-gradient(135deg, #000000, #1a1a1a)!important; }
-
-.banner {
-    width: 100%;
-    height: 16vh;
-    max-height: 140px;
-    min-height: 100px;
-    background: rgba(30, 30, 40, 0.5);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    padding: 10px 18px;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-.banner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: var(--banner-img);
-    background-size: cover;
-    background-position: center;
-    opacity: 0.35;
-    z-index: 0;
-  }
-
-.banner-content { max-width: 600px; z-index: 1; position: relative; }
-
-.banner-title {
-    font-size: clamp(16px, 1.8vw, 22px);
-    font-weight: 700;
-    margin-bottom: 3px;
-  }
-
-.banner-desc {
-    font-size: 12px;
-    opacity: 0.9;
-    margin-bottom: 6px;
-    line-height: 1.2;
-  }
-
-.banner-btn {
-    padding: 5px 14px;
-    background: linear-gradient(135deg, #00d4ff, #0099ff);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.15s ease;
-  }
-
-.banner-btn:focus {
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.6);
-    transform: scale(1.05);
-  }
-
-.player-overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; align-items: center; justify-content: center; }
-.player-overlay.active { display: flex; }
-.player-wrapper { width: 100vw; height: 100vh; position: relative; background: #000; }
-  #videoPlayer { width: 100%; height: 100%; background: #000; object-fit: cover; border: 0!important; }
-  video::-webkit-media-controls { display: none!important; }
-
-.player-menu { position: absolute; top: 16px; left: 16px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10001; }
-.player-menu.active { opacity: 1; pointer-events: all; }
-
-.menu-btn {
-    width: 32px;
-    height: 32px;
-    background: #00d4ff;
-    border: 3px solid #ffffff;
-    border-radius: 6px;
-    color: #000;
-    font-size: 18px;
+  .logo {
+    font-size: 4rem;
     font-weight: 900;
-    cursor: pointer;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .loading-wrap {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0;
-    transition: 0.1s ease;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.9);
+    gap: 16px;
   }
 
-.player-info { position: absolute; top: 16px; left: 56px; color: #fff; font-size: 12px; background: rgba(0, 0, 0, 0.7); padding: 6px 12px; border-radius: 4px; opacity: 0; transition: 0.3s; pointer-events: none; }
-.player-wrapper:hover.player-info { opacity: 1; }
-
-.sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: rgba(15, 18, 26, 0.98); border-right: 1px solid rgba(255,255,255,0.1); z-index: 10000; transition: left 0.3s; overflow-y: auto; padding: 20px 0; }
-.sidebar.active { left: 0; }
-.sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.sidebar-overlay.active { opacity: 1; pointer-events: all; }
-.sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-.sidebar-title { font-size: 20px; font-weight: 600; }
-
-.sidebar-close {
-    width: 30px;
-    height: 30px;
-    background: rgba(255,255,255,0.08);
-    border: 2px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
-    color: #fff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 300;
-    transition: all 0.2s ease;
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
 
-.sidebar-close:focus {
-    background: rgba(0, 212, 255, 0.25);
-    border-color: #00d4ff;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.4), 0 0 18px rgba(0, 212, 255, 0.5);
-    transform: scale(1.08);
+  .loading-text {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 2px;
   }
 
-.sidebar-item { padding: 14px 20px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
-.sidebar-item:focus { background: rgba(0, 212, 255, 0.15); border-left: 3px solid #00d4ff; }
-.sidebar-item.active { background: rgba(0, 212, 255, 0.15); border-left: 3px solid #00d4ff; }
-.sidebar-arrow { font-size: 12px; opacity: 0.6; }
-.submenu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.3); }
-.submenu.active { max-height: 500px; }
-.submenu-item { padding: 12px 20px 12px 40px; cursor: pointer; font-size: 14px; opacity: 0.8; transition: 0.2s; }
-.submenu-item:focus { background: rgba(0, 212, 255, 0.15); opacity: 1; }
-
-  @media (max-width: 1366px) {
-  .app-card,.banner { backdrop-filter: none; }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
-@keyframes nf-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.netflix-loader.active {
-  opacity: 1!important;
-  pointer-events: all!important;
-}
-#videoPlayer {
-  transition: opacity 0.4s ease;
-}
-#videoPlayer.loading {
-  opacity: 0;
-}
-.player-info.loading {
-  opacity: 0;
-}
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+  }
 
-#backHomeBtn {
-  background: #141414;
-  border: 2px solid transparent;
-  color: #fff;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.12s ease;
-}
-#backHomeBtn:focus {
-  outline: none;
-  border-color: rgba(64, 156, 255, 0.3);
-  box-shadow: 0 0 8px rgba(64, 156, 255, 0.15);
-}
-#backHomeBtn:active,
-#backHomeBtn.pressed {
-  transform: scale(0.88) translateX(-4px);
-  border-color: rgba(64, 156, 255, 0.45);
-  box-shadow: 0 0 12px rgba(64, 156, 255, 0.25);
-  background: #1a1a1a;
-}
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  .splash.fade-out {
+    animation: fadeOut 0.5s ease forwards;
+  }
 </style>
 </head>
 <body>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-title">Menu</div>
-        <button class="sidebar-close" id="sidebarClose" tabindex="0">×</button>
-      </div>
-
-      <div class="sidebar-item" data-submenu="config" tabindex="0">
-        <span>Configurações</span>
-        <span class="sidebar-arrow">▶</span>
-      </div>
-
-      <div class="submenu" id="submenu-config">
-      <div class="submenu-item" data-link="https://seu-link-de-pagamento.com" tabindex="0">Pagamento</div>
-    </div>
-  </div>
-
-
-  <div class="tv-container">
-    <div class="header">
-      <div class="header-left">
-        <button class="menu-toggle" id="menuToggle" tabindex="0">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div class="logo">ICI</div>
-      </div>
-      <div class="header-info">
-        <div class="time" id="time">--:--</div>
-        <div class="weather" id="weather">
-          <span class="weather-icon">⏳</span>
-          <span id="weatherTemp">--°C</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="banner" data-bg="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200">
-      <div class="banner-content">
-        <h1 class="banner-title">Destaque da Semana</h1>
-        <p class="banner-desc">Assista aos melhores filmes e séries. Novos lançamentos toda semana.</p>
-        <button class="banner-btn" data-url="https://test-streams.mux.dev/x36xhzz.m3u8" tabindex="0">Assistir Agora</button>
-      </div>
-    </div>
-
-    <h2 class="section-title">Canais</h2>
-    <div class="apps-row" id="appsRow">
-      <div class="app-card cnn" tabindex="0" data-url="https://d25usgadhphvwi.cloudfront.net/hls/stv-plus-640x360/playlist.m3u8" data-stream="true">
-        <div class="app-icon">CNN</div>
-        <div class="app-name">CNN Brasil</div>
-      </div>
-
-      <div class="app-card redbull" tabindex="0" data-url="https://d03ae6b5c6724c24867e97a3dc04934a.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-1026-WORBBRPTFAST-WHALETVPLUS/1026/hls/master/playlist.m3u8" data-stream="true">
-        <div class="app-icon">Sport</div>
-        <div class="app-name">RED BULL</div>
-      </div>
-
-      <div class="app-card veja" tabindex="0" data-url="https://cdn-5.nxplay.com.br/VEJA_PLUS_FAST/tracks-v1a1/mono.ts.m3u8" data-stream="true">
-        <div class="app-icon">VEJA</div>
-        <div class="app-name">VEJA+</div>
-      </div>
-
-      <div class="app-card sbt" tabindex="0" data-url="https://sbtnews.maissbt.com/3.m3u8" data-stream="true">
-        <div class="app-icon">SBT</div>
-        <div class="app-name">SBT News HD</div>
-      </div>
-
-      <div class="app-card novelas" tabindex="0" data-url="https://cis-no-samsung.otteravision.com/cis/no/no_h265.m3u8" data-stream="true">
-        <div class="app-icon">NV</div>
-        <div class="app-name">Novelas BR</div>
-      </div>
-
-      <div class="app-card sony" tabindex="0" data-url="https://a-cdn.klowdtv.com/live1/cine_720p/playlist.m3u8" data-stream="true">
-        <div class="app-icon">Cine</div>
-        <div class="app-name">Sony</div>
-      </div>
-
-      <div class="app-card puratv" tabindex="0" data-url="https://amg00740-sofa-amg00740c7-lg-br-7305.playouts.now.amagi.tv/1080p-cc-hevc/index.m3u8" data-stream="true">
-        <div class="app-icon">PuraTV</div>
-        <div class="app-name"></div>
-      </div>
-
-      <div class="app-card moviesphere" tabindex="0" data-url="https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00353-lionsgatestudio-moviespherebrazil-runtimelatam/playlist.m3u8" data-stream="true">
-        <div class="app-icon"></div>
-        <div class="app-name">MovieSphere</div>
-      </div>
-
-      <div class="app-card mytime" tabindex="0" data-url="https://appletree-mytime-samsungbrazil.amagi.tv/playlist.m3u8" data-stream="true">
-        <div class="app-icon"></div>
-        <div class="app-name">MyTime</div>
-      </div>
-
-      <div class="app-card runtime-acao" tabindex="0" data-url="https://stream.ads.ottera.tv/playlist.m3u8?network_id=2552" data-stream="true">
-        <div class="app-icon">Ação</div>
-        <div class="app-name">Runtime</div>
-      </div>
-
-      <div class="app-card runtime-br" tabindex="0" data-url="https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153" data-stream="true">
-        <div class="app-icon">Brasil</div>
-        <div class="app-name">Runtime</div>
-      </div>
-
-      <div class="app-card runtime-terror" tabindex="0" data-url="https://stream.ads.ottera.tv/playlist.m3u8?network_id=4865" data-stream="true">
-        <div class="app-icon">Terror</div>
-        <div class="app-name">Runtime</div>
-      </div>
-
-      <div class="app-card runtime-romance" tabindex="0" data-url="https://stream.ads.ottera.tv/playlist.m3u8?network_id=4866" data-stream="true">
-        <div class="app-icon"></div>
-        <div class="app-name">Romance</div>
-      </div>
-
-      <div class="app-card runtime-crime" tabindex="0" data-url="https://stream.ads.ottera.tv/playlist.m3u8?network_id=4864" data-stream="true">
-        <div class="app-icon">Crime</div>
-        <div class="app-name">Runtime</div>
-      </div>
-    </div>
-
-    <h2 class="section-title">Apps</h2>
-    <div class="apps-row" id="appsRow2">
-
-      <div class="app-card netflix" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz.m3u8" data-stream="true">
-        <div class="app-icon"></div>
-        <div class="app-name">Netflix</div>
-      </div>
-      
-    </div>
-  </div>
-
-   <div class="player-overlay" id="playerOverlay">
-    <div class="player-wrapper">
-      <video id="videoPlayer" autoplay></video>
-
-      <div class="netflix-loader" id="netflixLoader" style="position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;opacity:0;pointer-events:none;transition:opacity 0.3s ease;">
-        <div style="width:80px;height:80px;border:6px solid rgba(229,9,20,0.2);border-top:6px solid #e50914;border-radius:50%;animation:nf-spin 0.8s linear infinite;margin-bottom:24px;"></div>
-        <div id="nfLoadingText" style="color:#fff;font-size:24px;font-weight:500;letter-spacing:0.5px;">Carregando...</div>
-      </div>
-
-      <div class="player-info" id="playerInfo"></div>
-
-      <div class="player-menu" id="playerMenu">
-        <button class="menu-btn" id="backHomeBtn" tabindex="0" title="Voltar">←</button>
-      </div>
+  <div class="splash" id="splash">
+    <div class="logo">ICI</div>
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <div class="loading-text">Logando...</div>
     </div>
   </div>
 
 <script>
-  function updateTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('time').textContent = `${hours}:${minutes}`;
-  }
-  updateTime();
-  setInterval(updateTime, 60000);
+  // Troca esse link pelo da sua outra tela
+  const LINK_DA_OUTRA_TELA = 'ici.html';
+  
+  // Tempo de loading em milissegundos
+  const TEMPO_LOADING = 3000; // 3 segundos
 
-  async function updateWeather() {
-    try {
-      const lat = -20.5386;
-      const lon = -47.4008;
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&timezone=America%2FSao_Paulo`;
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      const temp = Math.round(data.current.temperature_2m);
-      const code = data.current.weather_code;
-      const isDay = data.current.is_day;
-
-      let icon = '☀';
-      if (code === 0) icon = isDay? '☀' : '🌙';
-      else if ([1,2,3].includes(code)) icon = isDay? '⛅' : '☁';
-      else if ([45,48].includes(code)) icon = '🌫';
-      else if ([51,53,55,56,57].includes(code)) icon = '🌦';
-      else if ([61,63,65,66,67,80,81,82].includes(code)) icon = '🌧';
-      else if ([71,73,75,77,85,86].includes(code)) icon = '❄';
-      else if ([95,96,99].includes(code)) icon = '⛈';
-
-      document.querySelector('.weather-icon').textContent = icon;
-      document.getElementById('weatherTemp').textContent = `${temp}°C`;
-    } catch (e) {
-      document.querySelector('.weather-icon').textContent = '🌤';
-      document.getElementById('weatherTemp').textContent = '--°C';
-    }
-  }
-  updateWeather();
-  setInterval(updateWeather, 600000);
-
-  const playerOverlay = document.getElementById('playerOverlay');
-  const videoPlayer = document.getElementById('videoPlayer');
-  const playerMenu = document.getElementById('playerMenu');
-  const backHomeBtn = document.getElementById('backHomeBtn');
-  const playerInfo = document.getElementById('playerInfo');
-  const netflixLoader = document.getElementById('netflixLoader');
-  const nfLoadingText = document.getElementById('nfLoadingText');
-  let hls = null;
-  let menuTimeout = null;
-  let lastFocusedCard = null;
-  let loadingTimer = null;
-
-  function showMenu() {
-    playerMenu.classList.add('active');
-    clearTimeout(menuTimeout);
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.classList.add('fade-out');
+    
     setTimeout(() => {
-      backHomeBtn.style.display = 'none';
-      backHomeBtn.offsetHeight;
-      backHomeBtn.style.display = 'flex';
-      backHomeBtn.focus();
-    }, 150);
-    menuTimeout = setTimeout(hideMenu, 4000);
-  }
-
-  function hideMenu() {
-    playerMenu.classList.remove('active');
-    videoPlayer.focus();
-  }
-
-  function showNetflixLoader(channelName) {
-    netflixLoader.classList.add('active');
-    videoPlayer.classList.add('loading');
-    playerInfo.classList.add('loading');
-    nfLoadingText.textContent = channelName;
-  }
-
-  function hideNetflixLoader() {
-    netflixLoader.classList.remove('active');
-    videoPlayer.classList.remove('loading');
-    playerInfo.classList.remove('loading');
-    clearTimeout(loadingTimer);
-  }
-
-  function openPlayer(url, appName) {
-    playerOverlay.classList.add('active');
-    showNetflixLoader(appName);
-
-    loadingTimer = setTimeout(() => {
-      hideNetflixLoader();
-      playerInfo.textContent = `Reproduzindo: ${appName}`;
-    }, 10000);
-
-    if (Hls.isSupported()) {
-      if (hls) hls.destroy();
-      hls = new Hls({ enableWorker: true });
-      hls.loadSource(url);
-      hls.attachMedia(videoPlayer);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        videoPlayer.play();
-      });
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) {
-          hideNetflixLoader();
-          playerInfo.textContent = `Erro: canal indisponível`;
-          setTimeout(closePlayer, 2000);
-          hls.destroy();
-        }
-      });
-    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-      videoPlayer.src = url;
-      videoPlayer.play();
-    }
-
-    setTimeout(showMenu, 600);
-  }
-
-  function closePlayer() {
-    hideNetflixLoader();
-    playerOverlay.classList.remove('active');
-    hideMenu();
-    videoPlayer.pause();
-    videoPlayer.src = '';
-    if (hls) {
-      hls.destroy();
-      hls = null;
-    }
-    lastFocusedCard?.focus() || document.querySelector('.app-card')?.focus();
-  }
-
-  backHomeBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
-      e.preventDefault();
-      e.stopPropagation();
-      backHomeBtn.classList.add('pressed');
-      setTimeout(() => backHomeBtn.classList.remove('pressed'), 120);
-      closePlayer();
-    }
-  });
-
-  backHomeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    backHomeBtn.classList.add('pressed');
-    setTimeout(() => backHomeBtn.classList.remove('pressed'), 120);
-    closePlayer();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (playerOverlay.classList.contains('active')) {
-      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
-        e.preventDefault();
-        e.stopPropagation();
-        closePlayer();
-        return;
-      }
-
-      if (!playerMenu.classList.contains('active')) {
-        if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'ArrowDown' || e.keyCode === 40 || e.key === 'ArrowUp' || e.keyCode === 38 || e.key === 'ArrowLeft' || e.keyCode === 37 || e.key === 'ArrowRight' || e.keyCode === 39) {
-          e.preventDefault();
-          e.stopPropagation();
-          showMenu();
-          return;
-        }
-      }
-      return;
-    }
-
-    if (sidebar.classList.contains('active')) {
-      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
-        e.preventDefault();
-        closeSidebar();
-        return;
-      }
-      return;
-    }
-
-    if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 8 || e.keyCode === 10009) {
-      e.preventDefault();
-      if (confirm('Deseja sair do app?')) {
-        window.close();
-      }
-    }
-  });
-
-  document.querySelectorAll('.app-card,.banner-btn').forEach(card => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      lastFocusedCard = card;
-      const url = card.getAttribute('data-url');
-      const isStream = card.hasAttribute('data-stream') || card.classList.contains('banner-btn');
-      if (!url ||!isStream) return;
-
-      const name = card.querySelector('.app-name')?.textContent.trim()
-                || card.querySelector('.app-icon')?.textContent.trim()
-                || 'Canal';
-      openPlayer(url, name);
-    });
-  });
-
-  const allRows = Array.from(document.querySelectorAll('.apps-row'));
-
-  allRows.forEach((row, rowIdx) => {
-    const rowCards = Array.from(row.querySelectorAll('.app-card'));
-
-    rowCards.forEach((card, cardIdx) => {
-      card.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight' && cardIdx < rowCards.length - 1) {
-          e.preventDefault();
-          rowCards[cardIdx + 1].focus();
-          rowCards[cardIdx + 1].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
-        if (e.key === 'ArrowLeft' && cardIdx > 0) {
-          e.preventDefault();
-          rowCards[cardIdx - 1].focus();
-          rowCards[cardIdx - 1].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
-        if (e.key === 'ArrowDown' && rowIdx < allRows.length - 1) {
-          e.preventDefault();
-          const nextRowCards = allRows[rowIdx + 1].querySelectorAll('.app-card');
-          nextRowCards[0]?.focus();
-        }
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          if (rowIdx > 0) {
-            const prevRowCards = allRows[rowIdx - 1].querySelectorAll('.app-card');
-            prevRowCards[0]?.focus();
-          } else {
-            document.querySelector('.banner-btn')?.focus();
-          }
-        }
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-    });
-  });
-
-document.querySelector('.banner-btn')?.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      document.querySelector('#appsRow .app-card')?.focus();
-    }
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.target.click();
-    }
-  });
-
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.querySelector('.app-card')?.focus();
-    }, 100);
-  });
-
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-  const sidebarOverlay = document.getElementById('sidebarOverlay');
-  const sidebarClose = document.getElementById('sidebarClose');
-
-  function openSidebar() {
-    sidebar.classList.add('active');
-    sidebarOverlay.classList.add('active');
-    menuToggle.classList.add('active');
-    setTimeout(() => {
-      document.querySelector('.sidebar-item')?.focus();
-    }, 300);
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove('active');
-    sidebarOverlay.classList.remove('active');
-    menuToggle.classList.remove('active');
-    document.querySelectorAll('.submenu').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.sidebar-arrow').forEach(a => a.textContent = '▶');
-    menuToggle.focus();
-  }
-
-  menuToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      menuToggle.classList.add('pressed');
-      setTimeout(() => menuToggle.classList.remove('pressed'), 150);
-      if (sidebar.classList.contains('active')) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    }
-  });
-
-  sidebarClose.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      closeSidebar();
-    }
-  });
-
-  document.querySelectorAll('.sidebar-item').forEach((item, idx, arr) => {
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' && idx < arr.length - 1) {
-        e.preventDefault();
-        arr[idx + 1].focus();
-      }
-      if (e.key === 'ArrowUp' && idx > 0) {
-        e.preventDefault();
-        arr[idx - 1].focus();
-      }
-      if (e.key === 'ArrowUp' && idx === 0) {
-        e.preventDefault();
-        sidebarClose.focus();
-      }
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const submenuId = item.getAttribute('data-submenu');
-        if (submenuId) {
-          const submenu = document.getElementById(`submenu-${submenuId}`);
-          const arrow = item.querySelector('.sidebar-arrow');
-          submenu.classList.toggle('active');
-          item.classList.toggle('active');
-          arrow.textContent = submenu.classList.contains('active')? '▼' : '▶';
-          if (submenu.classList.contains('active')) {
-            submenu.querySelector('.submenu-item')?.focus();
-          }
-        }
-      }
-    });
-  });
-
-  document.querySelectorAll('.submenu-item').forEach((item, idx, arr) => {
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' && idx < arr.length - 1) {
-        e.preventDefault();
-        arr[idx + 1].focus();
-      }
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (idx > 0) {
-          arr[idx - 1].focus();
-        } else {
-          document.querySelector('.sidebar-item.active')?.focus();
-        }
-      }
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const link = item.getAttribute('data-link');
-        if (link) {
-          window.open(link, '_blank');
-        }
-        closeSidebar();
-      }
-    });
-  });
-
-  const banner = document.querySelector('.banner[data-bg]');
-  if (banner) {
-    const bgUrl = banner.getAttribute('data-bg');
-    banner.style.setProperty('--banner-img', `url(${bgUrl})`);
-  }
+      window.location.href = LINK_DA_OUTRA_TELA;
+    }, 500); // espera o fade acabar
+    
+  }, TEMPO_LOADING);
 </script>
+
 </body>
 </html>
+
