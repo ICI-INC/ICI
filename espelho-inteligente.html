@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Mirror PT-BR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+   
+    /* Reset e base */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100vh;
+        background: #000000;
+        color: #FFFFFF;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 400;
+        line-height: 1.3;
+        overflow: hidden; /* remove scroll */
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh;
+        max-width: 430px;
+        margin: 0 auto;
+        padding: 3vh 4vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* distribui tudo na tela */
+    }
+
+    .widget {
+        width: 100%;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .widget-title {
+        font-size: 1.8vh;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.8vh;
+        opacity: 0.6;
+    }
+
+    /* 1. RELÓGIO */
+    .clock-time {
+        font-size: 9vh; /* era 72px */
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -2px;
+    }
+
+    .clock-date {
+        font-size: 2.2vh; /* era 18px */
+        font-weight: 300;
+        margin-top: 0.5vh;
+        text-transform: capitalize;
+        opacity: 0.9;
+    }
+
+    /* 2. CALENDÁRIO */
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1vh;
+        font-size: 2vh;
+        font-weight: 700;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5vh;
+        text-align: center;
+    }
+
+    .calendar-day-name {
+        font-size: 1.5vh;
+        opacity: 0.5;
+        padding-bottom: 0.3vh;
+    }
+
+    .calendar-day {
+        font-size: 1.9vh;
+        padding: 0.4vh 0;
+        border: 1px solid transparent;
+    }
+
+    .calendar-day.today {
+        border: 1px solid #FFFFFF;
+    }
+
+    .calendar-day.other-month {
+        opacity: 0.3;
+    }
+
+    /* 3. CLIMA */
+    .weather-location {
+        font-size: 2vh;
+        font-weight: 700;
+        margin-bottom: 0.3vh;
+    }
+
+    .weather-temp {
+        font-size: 7vh; /* era 56px */
+        font-weight: 700;
+        line-height: 1;
+        margin: 0.3vh 0;
+    }
+
+    .weather-condition {
+        font-size: 2.2vh;
+        margin-bottom: 0.5vh;
+        text-transform: capitalize;
+    }
+
+    .weather-minmax {
+        font-size: 2vh;
+        opacity: 0.8;
+    }
+
+    /* 4. COTAÇÕES */
+    .quotes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5vh;
+    }
+
+    .quote-item {
+        display: flex;
+        align-items: center;
+        font-size: 2.2vh; /* era 18px */
+        gap: 8px;
+    }
+
+    .quote-name {
+        width: 80px;
+        flex-shrink: 0;
+    }
+
+    .quote-arrow.up { color: #00FF00; }
+    .quote-arrow.down { color: #FF0000; }
+
+    /* 5. NOTÍCIAS */
+    .news-title {
+        font-size: 1.8vh;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.8vh;
+        opacity: 0.6;
+    }
+
+    .news-headline {
+        font-size: 2.1vh; /* era 18px */
+        line-height: 1.4;
+        min-height: 6vh;
+        display: flex;
+        align-items: center;
+        transition: opacity 0.3s ease;
+    }
+
+    .news-headline.fade { opacity: 0; }
+    .loading, .error { font-size: 1.8vh; opacity: 0.5; }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- 1. RELÓGIO -->
+    <div class="widget" id="clock">
+        <div class="widget-title">Hora</div>
+        <div class="clock-time" id="clockTime">00:00</div>
+        <div class="clock-date" id="clockDate">carregando...</div>
+    </div>
+
+    <!-- 2. CALENDÁRIO -->
+    <div class="widget" id="calendar">
+        <div class="widget-title">Calendário</div>
+        <div class="calendar-header" id="calendarMonth">carregando...</div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <!-- 3. CLIMA -->
+    <div class="widget" id="weather">
+        <div class="widget-title">Clima</div>
+        <div class="weather-location">Franca-SP</div>
+        <div class="weather-temp" id="weatherTemp">--°</div>
+        <div class="weather-condition" id="weatherCondition">carregando...</div>
+        <div class="weather-minmax" id="weatherMinMax">--° / --°</div>
+    </div>
+
+    <!-- 4. COTAÇÕES -->
+    <div class="widget" id="quotes">
+        <div class="widget-title">Cotações</div>
+        <div class="quotes-list" id="quotesList">
+            <div class="loading">carregando...</div>
+        </div>
+    </div>
+
+    <!-- 5. NOTÍCIAS G1 -->
+    <div class="widget" id="news">
+        <div class="news-title">G1 AGORA</div>
+        <div class="news-headline" id="newsHeadline">Carregando G1...</div>
+    </div>
+</div>
+
+<script>
+    // Configurações gerais
+    const LAT = -20.5386; // Franca-SP
+    const LON = -47.4009;
+    const TZ = 'America/Sao_Paulo';
+    const UPDATE_INTERVAL_QUOTES = 5 * 60 * 1000; // 5 minutos
+    const UPDATE_INTERVAL_NEWS = 10 * 1000; // 10 segundos
+    const FETCH_TIMEOUT = 8000; // 8s timeout nas requisições
+
+    // Estado para comparação de cotações
+    let lastQuotes = { usd: null, eur: null, btc: null };
+    let newsList = [];
+    let currentNewsIndex = 0;
+    let newsInterval = null;
+    let quotesRetryTimeout = null;
+
+    // Helper: fetch com timeout para evitar travar
+    function fetchWithTimeout(url, options = {}) {
+        return Promise.race([
+            fetch(url, options),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout de 8s excedido')), FETCH_TIMEOUT)
+            )
+        ]);
+    }
+
+    // 1. RELÓGIO - Atualiza a cada segundo
+    function updateClock() {
+        const now = new Date();
+        
+        // Hora HH:MM
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('clockTime').textContent = `${hours}:${minutes}`;
+        
+        // Data "Quarta, 20 Mai 2026"
+        const options = { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'short', 
+            year: 'numeric',
+            timeZone: TZ 
+        };
+        let dateStr = now.toLocaleDateString('pt-BR', options);
+        // Capitaliza primeira letra e remove ponto do mês
+        dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        dateStr = dateStr.replace('.', '');
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    // 2. CALENDÁRIO - Renderiza mês atual
+    function renderCalendar() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const today = now.getDate();
+
+        // Nome do mês
+        const monthName = now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric', timeZone: TZ });
+        document.getElementById('calendarMonth').textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+
+        // Dias da semana: D S T Q Q S S
+        const dayNames = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = '';
+
+        // Adiciona nomes dos dias
+        dayNames.forEach(day => {
+            const el = document.createElement('div');
+            el.className = 'calendar-day-name';
+            el.textContent = day;
+            grid.appendChild(el);
+        });
+
+        // Primeiro dia do mês e quantos dias tem
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+        // Dias do mês anterior
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const el = document.createElement('div');
+            el.className = 'calendar-day other-month';
+            el.textContent = daysInPrevMonth - i;
+            grid.appendChild(el);
+        }
+
+        // Dias do mês atual
+        for (let day = 1; day <= daysInMonth; day++) {
+            const el = document.createElement('div');
+            el.className = 'calendar-day';
+            if (day === today) el.classList.add('today');
+            el.textContent = day;
+            grid.appendChild(el);
+        }
+
+        // Completa grade até 6 linhas
+        const totalCells = grid.children.length - 7; // -7 dos nomes
+        const remaining = 42 - totalCells; // 6 semanas * 7 dias
+        for (let day = 1; day <= remaining; day++) {
+            const el = document.createElement('div');
+            el.className = 'calendar-day other-month';
+            el.textContent = day;
+            grid.appendChild(el);
+        }
+    }
+
+    // 3. CLIMA - Open-Meteo sem API key
+    async function updateWeather() {
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=${TZ}`;
+            console.log('[CLIMA] Buscando:', url);
+            const res = await fetchWithTimeout(url);
+            const data = await res.json();
+            console.log('[CLIMA] Resposta:', data);
+
+            // Temperatura atual
+            const temp = Math.round(data.current.temperature_2m);
+            document.getElementById('weatherTemp').textContent = `${temp}°`;
+
+            // Máx/Min do dia
+            const max = Math.round(data.daily.temperature_2m_max[0]);
+            const min = Math.round(data.daily.temperature_2m_min[0]);
+            document.getElementById('weatherMinMax').textContent = `${max}° / ${min}°`;
+
+            // Condição do tempo baseado em weather_code
+            const condition = getWeatherCondition(data.current.weather_code);
+            document.getElementById('weatherCondition').textContent = condition;
+
+        } catch (err) {
+            document.getElementById('weatherCondition').textContent = 'erro ao carregar';
+            console.error('[CLIMA] Erro:', err);
+        }
+    }
+
+    // Mapeia weather_code da Open-Meteo para texto PT-BR
+    function getWeatherCondition(code) {
+        const conditions = {
+            0: 'Céu limpo', 1: 'Maior parte limpo', 2: 'Parcialmente nublado', 3: 'Nublado',
+            45: 'Névoa', 48: 'Névoa com gelo',
+            51: 'Garoa leve', 53: 'Garoa', 55: 'Garoa forte',
+            61: 'Chuva leve', 63: 'Chuva', 65: 'Chuva forte',
+            71: 'Neve leve', 73: 'Neve', 75: 'Neve forte',
+            80: 'Pancadas leves', 81: 'Pancadas', 82: 'Pancadas fortes',
+            95: 'Trovoada', 96: 'Trovoada com granizo', 99: 'Trovoada forte'
+        };
+        return conditions[code] || 'Ensolarado';
+    }
+
+    // 4. COTAÇÕES - AwesomeAPI + CoinGecko
+    async function updateQuotes() {
+        // Limpa retry anterior se existir
+        if (quotesRetryTimeout) {
+            clearTimeout(quotesRetryTimeout);
+            quotesRetryTimeout = null;
+        }
+
+        try {
+            console.log('[COTAÇÕES] Iniciando busca...');
+            
+            // Busca USD e EUR via AwesomeAPI - sem CORS, funciona no BR
+            const [usdRes, eurRes, btcRes] = await Promise.all([
+                fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL'),
+                fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/EUR-BRL'),
+                fetchWithTimeout('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl&include_24hr_change=true')
+            ]);
+
+            const usdData = await usdRes.json();
+            const eurData = await eurRes.json();
+            const btcData = await btcRes.json();
+
+            console.log('[COTAÇÕES] USD:', usdData);
+            console.log('[COTAÇÕES] EUR:', eurData);
+            console.log('[COTAÇÕES] BTC:', btcData);
+
+            const usdBrl = parseFloat(usdData.USDBRL.bid);
+            const eurBrl = parseFloat(eurData.EURBRL.bid);
+            const btcBrl = btcData.bitcoin.brl;
+
+            // Monta HTML com setas
+            const quotesHTML = [
+                createQuoteRow('Dólar', usdBrl, lastQuotes.usd, 'R$ ', 2),
+                createQuoteRow('Euro', eurBrl, lastQuotes.eur, 'R$ ', 2),
+                createQuoteRow('Bitcoin', btcBrl, lastQuotes.btc, 'R$ ', 0)
+            ].join('');
+
+            document.getElementById('quotesList').innerHTML = quotesHTML;
+
+            // Salva valores para próxima comparação
+            lastQuotes = { usd: usdBrl, eur: eurBrl, btc: btcBrl };
+
+        } catch (err) {
+            console.error('[COTAÇÕES] Erro:', err);
+            // Fallback: mostra --,-- e agenda retry em 30s
+            const quotesHTML = [
+                '<div class="quote-item"><span class="quote-name">Dólar:</span><span class="quote-value">R$ --,--</span></div>',
+                '<div class="quote-item"><span class="quote-name">Euro:</span><span class="quote-value">R$ --,--</span></div>',
+                '<div class="quote-item"><span class="quote-name">Bitcoin:</span><span class="quote-value">R$ --,--</span></div>'
+            ].join('');
+            document.getElementById('quotesList').innerHTML = quotesHTML;
+            
+            // Tenta novamente em 30s
+            quotesRetryTimeout = setTimeout(updateQuotes, 30000);
+        }
+    }
+
+    // Cria linha de cotação com seta de variação
+    function createQuoteRow(name, value, lastValue, prefix, decimals) {
+        let arrow = '';
+        let arrowClass = '';
+        
+        if (lastValue !== null) {
+            if (value > lastValue) {
+                arrow = '↑';
+                arrowClass = 'up';
+            } else if (value < lastValue) {
+                arrow = '↓';
+                arrowClass = 'down';
+            }
+        }
+
+        const formatted = value.toLocaleString('pt-BR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+
+        return `
+            <div class="quote-item">
+                <span class="quote-name">${name}:</span>
+                <span class="quote-arrow ${arrowClass}">${arrow}</span>
+                <span class="quote-value">${prefix}${formatted}</span>
+            </div>
+        `;
+    }
+
+    // 5. NOTÍCIAS G1 - RSS2JSON + Fallback AllOrigins
+    async function fetchNews() {
+        try {
+            document.getElementById('newsHeadline').textContent = 'Carregando G1...';
+            console.log('[NOTÍCIAS] Tentando RSS2JSON...');
+            
+            // Primeira tentativa: rss2json
+            const rss2jsonUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://g1.globo.com/rss/g1/';
+            let res = await fetchWithTimeout(rss2jsonUrl);
+            let data = await res.json();
+            
+            console.log('[NOTÍCIAS] RSS2JSON resposta:', data);
+            
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
+                newsList = data.items.slice(0, 5).map(item => item.title.trim());
+                startNewsRotation();
+                return;
+            }
+            
+            throw new Error('RSS2JSON falhou ou vazio');
+            
+        } catch (err) {
+            console.warn('[NOTÍCIAS] RSS2JSON falhou, tentando AllOrigins:', err);
+            
+            // Fallback: AllOrigins
+            try {
+                const rssUrl = 'https://g1.globo.com/rss/g1/';
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+                const res = await fetchWithTimeout(proxyUrl);
+                const data = await res.json();
+                
+                console.log('[NOTÍCIAS] AllOrigins resposta:', data);
+                
+                // Parse XML
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(data.contents, 'text/xml');
+                const items = xml.querySelectorAll('item');
+                
+                newsList = Array.from(items).slice(0, 5).map(item => {
+                    return item.querySelector('title').textContent.trim();
+                });
+
+                if (newsList.length > 0) {
+                    startNewsRotation();
+                    return;
+                }
+                
+                throw new Error('AllOrigins sem conteúdo');
+                
+            } catch (err2) {
+                console.error('[NOTÍCIAS] Erro total:', err2);
+                document.getElementById('newsHeadline').textContent = 'Erro ao carregar notícias';
+                // Tenta de novo em 60s
+                setTimeout(fetchNews, 60000);
+            }
+        }
+    }
+
+    // Inicia rotação de manchetes
+    function startNewsRotation() {
+        if (newsList.length === 0) return;
+        
+        currentNewsIndex = 0;
+        rotateNews(); // Mostra primeira imediatamente
+        
+        // Limpa interval anterior
+        if (newsInterval) clearInterval(newsInterval);
+        newsInterval = setInterval(rotateNews, UPDATE_INTERVAL_NEWS);
+    }
+
+    // Rotaciona manchetes a cada 10s
+    function rotateNews() {
+        if (newsList.length === 0) return;
+        
+        const headlineEl = document.getElementById('newsHeadline');
+        headlineEl.classList.add('fade');
+        
+        setTimeout(() => {
+            headlineEl.textContent = newsList[currentNewsIndex];
+            headlineEl.classList.remove('fade');
+            currentNewsIndex = (currentNewsIndex + 1) % newsList.length;
+        }, 300);
+    }
+
+    // Inicialização
+    function init() {
+        console.log('[INIT] Smart Mirror iniciando...');
+        updateClock();
+        renderCalendar();
+        updateWeather();
+        updateQuotes();
+        fetchNews();
+
+        // Intervalos de atualização
+        setInterval(updateClock, 1000); // Relógio: 1s
+        setInterval(renderCalendar, 60000); // Calendário: 1min para virar dia
+        setInterval(updateWeather, 10 * 60 * 1000); // Clima: 10min
+        setInterval(updateQuotes, UPDATE_INTERVAL_QUOTES); // Cotações: 5min
+        setInterval(fetchNews, 15 * 60 * 1000); // Busca novas notícias: 15min
+    }
+
+    // Inicia quando DOM carregar
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
